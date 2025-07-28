@@ -49,10 +49,19 @@ export default function SEOAnalyzer() {
     return "bg-danger";
   };
 
-  const handleBoost = () => {
+  const handleBoost = async () => {
     if (hasUsedBoost) return;
     
-    // Mock boost functionality - improve scores
+    setIsAnalyzing(true);
+    
+    // Simulate SEO optimization process
+    await new Promise(resolve => setTimeout(resolve, 2500));
+    
+    // Generate SEO-optimized content with better keywords
+    const optimizedContent = generateSEOContent(content);
+    setContent(optimizedContent);
+    
+    // Update scores to reflect optimization
     if (scores) {
       setScores({
         overall: Math.min(95, scores.overall + 15),
@@ -62,6 +71,41 @@ export default function SEOAnalyzer() {
       });
       setHasUsedBoost(true);
     }
+    
+    setIsAnalyzing(false);
+  };
+
+  const generateSEOContent = (originalContent: string): string => {
+    // Enhanced SEO optimization logic
+    let optimizedContent = originalContent;
+    
+    // Add power words for better engagement
+    const powerWords = ['ultimate', 'proven', 'essential', 'game-changing', 'breakthrough', 'exclusive'];
+    const randomPowerWord = powerWords[Math.floor(Math.random() * powerWords.length)];
+    
+    // Enhance with SEO keywords based on content type
+    if (originalContent.toLowerCase().includes('linkedin') || originalContent.toLowerCase().includes('professional')) {
+      optimizedContent = optimizedContent.replace(/\b(tips|advice|strategy)\b/gi, (match) => 
+        `${randomPowerWord} ${match.toLowerCase()}`);
+      optimizedContent += '\n\n#ProfessionalGrowth #CareerTips #LinkedInStrategy #BusinessSuccess';
+    } else if (originalContent.toLowerCase().includes('instagram') || originalContent.toLowerCase().includes('social')) {
+      optimizedContent += '\n\n#Trending #ViralContent #SocialMediaGrowth #ContentCreator #EngagementBoost';
+    } else {
+      // General content optimization
+      optimizedContent = optimizedContent.replace(/\b(important|good|great)\b/gi, (match) => 
+        `${randomPowerWord}`);
+      optimizedContent += '\n\n#ContentMarketing #SEOOptimized #DigitalMarketing #OnlinePresence';
+    }
+    
+    // Add compelling call-to-action if missing
+    if (!optimizedContent.includes('?') && !optimizedContent.includes('comment') && !optimizedContent.includes('share')) {
+      optimizedContent += '\n\n💬 What are your thoughts? Share your experience in the comments below!';
+    }
+    
+    // Optimize for readability - break long sentences
+    optimizedContent = optimizedContent.replace(/([.!?])\s*([A-Z])/g, '$1\n\n$2');
+    
+    return optimizedContent;
   };
 
   return (
