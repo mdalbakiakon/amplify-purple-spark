@@ -18,6 +18,8 @@ export default function SEOAnalyzer() {
   const [scores, setScores] = useState<SEOScore | null>(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [hasUsedBoost, setHasUsedBoost] = useState(false);
+  const [wordCount, setWordCount] = useState(0);
+  const FREE_WORD_LIMIT = 2500;
 
   // Mock SEO analysis function
   const analyzeContent = async () => {
@@ -120,12 +122,38 @@ export default function SEOAnalyzer() {
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          <Textarea
-            placeholder="Paste your LinkedIn post, Instagram caption, or any content here..."
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            className="min-h-32 bg-background/50 border-border resize-none"
-          />
+          <div className="space-y-2">
+            <Textarea
+              placeholder="Paste your LinkedIn post, Instagram caption, or any content here..."
+              value={content}
+              onChange={(e) => {
+                const newContent = e.target.value;
+                const words = newContent.trim().split(/\s+/).filter(word => word.length > 0);
+                const currentWordCount = words.length;
+                
+                if (currentWordCount <= FREE_WORD_LIMIT) {
+                  setContent(newContent);
+                  setWordCount(currentWordCount);
+                } else {
+                  // Truncate to word limit
+                  const truncated = words.slice(0, FREE_WORD_LIMIT).join(' ');
+                  setContent(truncated);
+                  setWordCount(FREE_WORD_LIMIT);
+                }
+              }}
+              className="min-h-32 bg-background/50 border-border resize-none"
+            />
+            <div className="flex justify-between items-center text-xs">
+              <span className={`${wordCount > FREE_WORD_LIMIT * 0.9 ? 'text-warning' : 'text-muted-foreground'}`}>
+                {wordCount} / {FREE_WORD_LIMIT.toLocaleString()} words
+              </span>
+              {wordCount >= FREE_WORD_LIMIT && (
+                <span className="text-primary font-medium">
+                  Upgrade to Premium for unlimited words
+                </span>
+              )}
+            </div>
+          </div>
           
           <div className="flex flex-col sm:flex-row gap-3">
             <Button 

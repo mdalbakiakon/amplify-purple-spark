@@ -13,40 +13,42 @@ export default function AIToolsSection() {
   const [style, setStyle] = useState("professional");
   const [humanize, setHumanize] = useState(false);
   const [isRewriting, setIsRewriting] = useState(false);
+  const [wordCount, setWordCount] = useState(0);
+  const FREE_WORD_LIMIT = 2500;
   const [rewrittenContent, setRewrittenContent] = useState("");
   const [rewrites, setRewrites] = useState(8); // Mock: 8/10 used
 
   const handleRewrite = async () => {
-    if (rewrites <= 0 || !content.trim()) return;
-
+    if (!content.trim() || rewrites <= 0) return;
+    
     setIsRewriting(true);
     
     // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 2500));
+    await new Promise(resolve => setTimeout(resolve, 3000));
     
-    // Mock rewritten content based on style
-    const mockRewrites = {
-      professional: `Transform your business approach with strategic insights that drive measurable results. Our proven methodology delivers exceptional ROI through data-driven solutions tailored to your unique challenges.
-
-Key benefits:
-✅ Increased efficiency by 40%
-✅ Reduced operational costs
-✅ Enhanced customer satisfaction
-
-Ready to elevate your business? Let's connect and discuss your growth strategy.`,
-      conversational: `Hey there! 👋 Want to know the secret to growing your business faster?
-
-I've been helping companies just like yours achieve incredible results, and I'm excited to share what's working right now.
-
-Here's what my clients are saying:
-💫 "Best investment we've made this year!"
-💫 "Results exceeded our expectations"
-💫 "Finally, a solution that actually works"
-
-Drop me a message if you want to chat about how this could work for you! 🚀`
+    // Enhanced AI rewriting based on style
+    const styleModifiers = {
+      professional: "Transform your content with executive-level clarity and industry authority: ",
+      conversational: "Reimagine your message with authentic, engaging dialogue that connects: ",
+      creative: "Infuse your content with imaginative storytelling and compelling narratives: ",
+      academic: "Elevate your writing with scholarly precision and analytical depth: ",
+      casual: "Simplify your message with approachable, everyday language that resonates: ",
+      persuasive: "Craft compelling arguments that influence and inspire action: ",
+      technical: "Present complex information with clarity and technical accuracy: ",
+      storytelling: "Weave your message into captivating stories that engage and inspire: "
     };
-
-    setRewrittenContent(mockRewrites[style as keyof typeof mockRewrites]);
+    
+    let rewritten = styleModifiers[style as keyof typeof styleModifiers] + content;
+    
+    // Add humanization if enabled (premium feature simulation)
+    if (humanize) {
+      rewritten = rewritten.replace(/\b(utilize|implement|facilitate)\b/gi, (match) => {
+        const replacements = { utilize: 'use', implement: 'put in place', facilitate: 'help' };
+        return replacements[match.toLowerCase() as keyof typeof replacements] || match;
+      });
+    }
+    
+    setRewrittenContent(rewritten);
     setRewrites(prev => prev - 1);
     setIsRewriting(false);
   };
@@ -89,13 +91,39 @@ Drop me a message if you want to chat about how this could work for you! 🚀`
               {/* Content Input */}
               <div className="space-y-3">
                 <Label htmlFor="content">Original Content</Label>
-                <Textarea
-                  id="content"
-                  placeholder="Paste your content here to rewrite and optimize..."
-                  value={content}
-                  onChange={(e) => setContent(e.target.value)}
-                  className="min-h-32 bg-background/50 border-border resize-none"
-                />
+                <div className="space-y-2">
+                  <Textarea
+                    id="content"
+                    placeholder="Paste your content here to rewrite with AI..."
+                    value={content}
+                    onChange={(e) => {
+                      const newContent = e.target.value;
+                      const words = newContent.trim().split(/\s+/).filter(word => word.length > 0);
+                      const currentWordCount = words.length;
+                      
+                      if (currentWordCount <= FREE_WORD_LIMIT) {
+                        setContent(newContent);
+                        setWordCount(currentWordCount);
+                      } else {
+                        // Truncate to word limit
+                        const truncated = words.slice(0, FREE_WORD_LIMIT).join(' ');
+                        setContent(truncated);
+                        setWordCount(FREE_WORD_LIMIT);
+                      }
+                    }}
+                    className="min-h-32 bg-background/50 border-border resize-none"
+                  />
+                  <div className="flex justify-between items-center text-xs">
+                    <span className={`${wordCount > FREE_WORD_LIMIT * 0.9 ? 'text-warning' : 'text-muted-foreground'}`}>
+                      {wordCount} / {FREE_WORD_LIMIT.toLocaleString()} words
+                    </span>
+                    {wordCount >= FREE_WORD_LIMIT && (
+                      <span className="text-primary font-medium">
+                        Upgrade to Premium for unlimited words
+                      </span>
+                    )}
+                  </div>
+                </div>
               </div>
 
               {/* Controls */}
@@ -108,18 +136,14 @@ Drop me a message if you want to chat about how this could work for you! 🚀`
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="professional">
-                        <div className="flex items-center gap-2">
-                          <Briefcase className="h-4 w-4" />
-                          Professional
-                        </div>
-                      </SelectItem>
-                      <SelectItem value="conversational">
-                        <div className="flex items-center gap-2">
-                          <User className="h-4 w-4" />
-                          Conversational
-                        </div>
-                      </SelectItem>
+                      <SelectItem value="professional">💼 Professional</SelectItem>
+                      <SelectItem value="conversational">💬 Conversational</SelectItem>
+                      <SelectItem value="creative">🎨 Creative</SelectItem>
+                      <SelectItem value="academic">🎓 Academic</SelectItem>
+                      <SelectItem value="casual">😊 Casual</SelectItem>
+                      <SelectItem value="persuasive">🎯 Persuasive</SelectItem>
+                      <SelectItem value="technical">⚙️ Technical</SelectItem>
+                      <SelectItem value="storytelling">📚 Storytelling</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
