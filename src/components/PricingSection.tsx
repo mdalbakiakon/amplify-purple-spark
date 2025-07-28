@@ -142,9 +142,6 @@ export default function PricingSection() {
 
         {/* Comparison Note */}
         <div className="text-center mt-8 text-muted-foreground">
-          <p className="text-sm">
-            Compare with: <span className="line-through">Copy.ai ($36/month)</span> • <span className="line-through">Simplified ($12/month)</span>
-          </p>
           <p className="text-xs mt-1">AmplifyX offers the best value for SEO-focused content optimization</p>
         </div>
       </div>
