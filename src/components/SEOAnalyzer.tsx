@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
-import { Zap, TrendingUp, Eye, Hash, Lock, Sparkles, Globe, AlertTriangle, CheckCircle, XCircle } from "lucide-react";
+import { Zap, TrendingUp, Eye, Hash, Lock, Sparkles, Globe, AlertTriangle, CheckCircle, XCircle, Copy, Code, Tag } from "lucide-react";
 
 interface SEOScore {
   overall: number;
@@ -27,6 +27,9 @@ interface WebsiteSEOData {
   metaDescription?: string;
   issues: SEOIssue[];
   score: SEOScore;
+  framework?: string;
+  keywords?: string[];
+  isEcommerce?: boolean;
 }
 
 export default function SEOAnalyzer() {
@@ -39,6 +42,56 @@ export default function SEOAnalyzer() {
   const [websiteSEO, setWebsiteSEO] = useState<WebsiteSEOData | null>(null);
   const [isAnalyzingWebsite, setIsAnalyzingWebsite] = useState(false);
   const FREE_WORD_LIMIT = 2500;
+
+  const generateKeywords = (domain: string, isEcommerce: boolean): string[] => {
+    const baseKeywords = domain.split('.')[0].split('-').join(' ');
+    const industryKeywords = isEcommerce 
+      ? ['online store', 'buy online', 'best price', 'shop now', 'free shipping']
+      : ['services', 'professional', 'expert', 'solutions', 'consulting'];
+    
+    return [
+      baseKeywords,
+      `${baseKeywords} services`,
+      `best ${baseKeywords}`,
+      `${baseKeywords} near me`,
+      industryKeywords[Math.floor(Math.random() * industryKeywords.length)]
+    ].slice(0, 5);
+  };
+
+  const copyToClipboard = async (text: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      // You could add a toast notification here
+    } catch (err) {
+      console.error('Failed to copy text: ', err);
+    }
+  };
+
+  const generateMetaTags = (seoData: WebsiteSEOData) => {
+    const domain = seoData.url.replace(/^https?:\/\//, '').replace(/^www\./, '').split('/')[0];
+    const businessName = domain.charAt(0).toUpperCase() + domain.slice(1).replace(/\.(com|org|net|io)/, '');
+    
+    return {
+      title: `${businessName} - ${seoData.isEcommerce ? 'Best Products Online' : 'Professional Services'} | ${seoData.keywords?.[0] || 'Top Quality'}`,
+      description: `Discover ${businessName}'s ${seoData.isEcommerce ? 'premium products with fast shipping' : 'expert services'}. ${seoData.keywords?.slice(0,2).join(', ')} and more. Get started today!`,
+      openGraph: `<meta property="og:title" content="${businessName} - Professional ${seoData.isEcommerce ? 'Store' : 'Services'}" />
+<meta property="og:description" content="Experience quality ${seoData.keywords?.[0]} services. Trusted by thousands of customers." />
+<meta property="og:image" content="${seoData.url}/og-image.jpg" />
+<meta property="og:url" content="${seoData.url}" />`,
+      schema: seoData.isEcommerce ? `{
+  "@context": "https://schema.org/",
+  "@type": "Store",
+  "name": "${businessName}",
+  "image": "${seoData.url}/logo.jpg",
+  "description": "Premium ${seoData.keywords?.[0]} products online"
+}` : `{
+  "@context": "https://schema.org/",
+  "@type": "ProfessionalService",
+  "name": "${businessName}",
+  "description": "Expert ${seoData.keywords?.[0]} services"
+}`
+    };
+  };
 
   // Mock SEO analysis function
   const analyzeContent = async () => {
@@ -102,48 +155,59 @@ export default function SEOAnalyzer() {
     // Simulate website crawling and analysis
     await new Promise(resolve => setTimeout(resolve, 3000));
     
-    // Generate mock SEO issues and suggestions
+    // Extract domain for keyword suggestions
+    const domain = websiteUrl.replace(/^https?:\/\//, '').replace(/^www\./, '').split('/')[0];
+    const isEcommerce = Math.random() > 0.5;
+    const framework = ['React', 'WordPress', 'Shopify', 'Wix', 'Squarespace'][Math.floor(Math.random() * 5)];
+    
+    // Generate mock SEO issues with specific solutions
     const mockIssues: SEOIssue[] = [
       {
         type: 'error',
         category: 'Meta Tags',
-        message: 'Missing meta description - crucial for search rankings',
+        message: 'Missing meta description - Add the copyable meta tag below',
         impact: 'high'
       },
       {
         type: 'warning',
         category: 'Title Tag',
-        message: 'Title tag is too long (65+ characters)',
+        message: 'Title tag needs optimization - Use the improved version below',
         impact: 'medium'
       },
       {
         type: 'error',
         category: 'Headers',
-        message: 'Missing H1 tag - important for content structure',
+        message: 'Missing H1 tag - Add proper heading structure',
         impact: 'high'
       },
       {
         type: 'warning',
         category: 'Images',
-        message: '3 images missing alt tags',
+        message: '3 images missing alt tags - Copy the code examples below',
         impact: 'medium'
       },
       {
         type: 'success',
         category: 'Performance',
-        message: 'Page load speed is good',
+        message: 'Page load speed is good (2.3s)',
         impact: 'low'
       },
       {
         type: 'error',
-        category: 'Content',
-        message: 'Low keyword density - add more relevant keywords',
+        category: 'Keywords',
+        message: 'Low keyword density - Use suggested keywords below',
         impact: 'high'
       },
       {
         type: 'warning',
-        category: 'Schema',
-        message: 'Missing structured data markup',
+        category: 'Schema Markup',
+        message: `Missing ${isEcommerce ? 'Product' : 'Article'} schema - Add the code below`,
+        impact: 'medium'
+      },
+      {
+        type: 'warning',
+        category: 'Open Graph',
+        message: 'Missing social media meta tags - Copy the tags below',
         impact: 'medium'
       }
     ];
@@ -155,12 +219,18 @@ export default function SEOAnalyzer() {
       engagement: Math.floor(Math.random() * 25) + 50   // 50-75
     };
     
+    // Generate suggested keywords based on domain
+    const suggestedKeywords = generateKeywords(domain, isEcommerce);
+    
     setWebsiteSEO({
       url: websiteUrl,
-      title: `Mock Title for ${websiteUrl}`,
-      metaDescription: Math.random() > 0.5 ? 'Mock meta description found' : undefined,
+      title: `Home - ${domain.charAt(0).toUpperCase() + domain.slice(1)}`,
+      metaDescription: Math.random() > 0.5 ? 'Basic meta description found - needs optimization' : undefined,
       issues: mockIssues,
-      score: mockScores
+      score: mockScores,
+      framework,
+      keywords: suggestedKeywords,
+      isEcommerce
     });
     
     setIsAnalyzingWebsite(false);
@@ -363,6 +433,153 @@ export default function SEOAnalyzer() {
                 </div>
               </div>
             </div>
+
+            {/* Copyable Meta Tags & Solutions */}
+            {websiteSEO && (
+              <>
+                {/* Suggested Keywords */}
+                <div className="space-y-3">
+                  <h4 className="font-medium text-sm flex items-center gap-2">
+                    <Tag className="h-4 w-4 text-primary" />
+                    🎯 Suggested Keywords (Free Plan - 5 keywords):
+                  </h4>
+                  <div className="flex flex-wrap gap-2">
+                    {websiteSEO.keywords?.map((keyword, index) => (
+                      <Badge key={index} variant="secondary" className="cursor-pointer" onClick={() => copyToClipboard(keyword)}>
+                        {keyword}
+                        <Copy className="h-3 w-3 ml-1" />
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Copyable Meta Tags */}
+                <div className="space-y-4">
+                  <h4 className="font-medium text-sm flex items-center gap-2">
+                    <Code className="h-4 w-4 text-primary" />
+                    📋 Copy & Paste These Meta Tags:
+                  </h4>
+                  
+                  {(() => {
+                    const metaTags = generateMetaTags(websiteSEO);
+                    return (
+                      <div className="space-y-4">
+                        {/* Title Tag */}
+                        <div className="bg-muted/20 p-3 rounded-lg">
+                          <div className="flex justify-between items-center mb-2">
+                            <span className="text-xs font-medium text-muted-foreground">OPTIMIZED TITLE TAG</span>
+                            <Button 
+                              size="sm" 
+                              variant="outline" 
+                              onClick={() => copyToClipboard(`<title>${metaTags.title}</title>`)}
+                              className="h-6 text-xs"
+                            >
+                              <Copy className="h-3 w-3" />
+                            </Button>
+                          </div>
+                          <code className="text-xs text-foreground break-all">
+                            &lt;title&gt;{metaTags.title}&lt;/title&gt;
+                          </code>
+                        </div>
+
+                        {/* Meta Description */}
+                        <div className="bg-muted/20 p-3 rounded-lg">
+                          <div className="flex justify-between items-center mb-2">
+                            <span className="text-xs font-medium text-muted-foreground">OPTIMIZED META DESCRIPTION</span>
+                            <Button 
+                              size="sm" 
+                              variant="outline" 
+                              onClick={() => copyToClipboard(`<meta name="description" content="${metaTags.description}" />`)}
+                              className="h-6 text-xs"
+                            >
+                              <Copy className="h-3 w-3" />
+                            </Button>
+                          </div>
+                          <code className="text-xs text-foreground break-all">
+                            &lt;meta name="description" content="{metaTags.description}" /&gt;
+                          </code>
+                        </div>
+
+                        {/* Open Graph Tags */}
+                        <div className="bg-muted/20 p-3 rounded-lg">
+                          <div className="flex justify-between items-center mb-2">
+                            <span className="text-xs font-medium text-muted-foreground">SOCIAL MEDIA (OPEN GRAPH) TAGS</span>
+                            <Button 
+                              size="sm" 
+                              variant="outline" 
+                              onClick={() => copyToClipboard(metaTags.openGraph)}
+                              className="h-6 text-xs"
+                            >
+                              <Copy className="h-3 w-3" />
+                            </Button>
+                          </div>
+                          <code className="text-xs text-foreground whitespace-pre-wrap break-all">
+                            {metaTags.openGraph}
+                          </code>
+                        </div>
+
+                        {/* Schema Markup */}
+                        <div className="bg-muted/20 p-3 rounded-lg">
+                          <div className="flex justify-between items-center mb-2">
+                            <span className="text-xs font-medium text-muted-foreground">SCHEMA MARKUP (JSON-LD)</span>
+                            <Button 
+                              size="sm" 
+                              variant="outline" 
+                              onClick={() => copyToClipboard(`<script type="application/ld+json">${metaTags.schema}</script>`)}
+                              className="h-6 text-xs"
+                            >
+                              <Copy className="h-3 w-3" />
+                            </Button>
+                          </div>
+                          <code className="text-xs text-foreground whitespace-pre-wrap break-all">
+                            &lt;script type="application/ld+json"&gt;{metaTags.schema}&lt;/script&gt;
+                          </code>
+                        </div>
+
+                        {/* Framework-specific Instructions */}
+                        <div className="bg-muted/20 p-3 rounded-lg">
+                          <div className="flex items-center gap-2 mb-2">
+                            <span className="text-xs font-medium text-muted-foreground">
+                              📝 IMPLEMENTATION GUIDE FOR {websiteSEO.framework?.toUpperCase()}
+                            </span>
+                          </div>
+                          <div className="text-xs text-muted-foreground space-y-1">
+                            {websiteSEO.framework === 'WordPress' && (
+                              <div>
+                                • Install Yoast SEO or RankMath plugin<br/>
+                                • Add meta tags in theme's header.php or use plugin interface<br/>
+                                • Use featured images for og:image tags
+                              </div>
+                            )}
+                            {websiteSEO.framework === 'React' && (
+                              <div>
+                                • Use React Helmet for dynamic meta tags<br/>
+                                • Add meta tags to public/index.html for static content<br/>
+                                • Consider Next.js for better SEO with SSR
+                              </div>
+                            )}
+                            {websiteSEO.framework === 'Shopify' && (
+                              <div>
+                                • Edit theme.liquid file in theme editor<br/>
+                                • Use Shopify's built-in SEO fields for products<br/>
+                                • Install SEO apps for advanced features
+                              </div>
+                            )}
+                            {(websiteSEO.framework === 'Wix' || websiteSEO.framework === 'Squarespace') && (
+                              <div>
+                                • Use platform's built-in SEO tools<br/>
+                                • Add meta tags in page settings<br/>
+                                • Upload custom og:image in social media settings
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })()}
+                </div>
+              </>
+            )}
 
             {/* AI Rewriter Suggestion */}
             <div className="bg-premium/10 border border-premium/20 rounded-lg p-4">
