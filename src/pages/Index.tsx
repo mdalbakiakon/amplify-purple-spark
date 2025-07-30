@@ -21,9 +21,6 @@ const Index = () => {
       <footer className="bg-card/30 border-t border-border py-12">
         <div className="container mx-auto px-4 text-center">
           <div className="flex items-center justify-center gap-3 mb-4">
-            <div className="w-8 h-8 bg-gradient-purple rounded-lg flex items-center justify-center">
-              <span className="text-primary-foreground font-bold text-sm">AX</span>
-            </div>
             <span className="text-xl font-bold bg-gradient-purple bg-clip-text text-transparent">
               AmplifyX
             </span>
@@ -38,7 +35,7 @@ const Index = () => {
             <a href="#" className="hover:text-primary transition-colors">API</a>
           </div>
           <p className="text-xs text-muted-foreground mt-6">
-            © 2024 AmplifyX. All rights reserved.
+            © 2025 AmplifyX. All rights reserved.
           </p>
         </div>
       </footer>

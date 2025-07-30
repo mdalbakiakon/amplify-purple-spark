@@ -9,7 +9,7 @@ export default function HeroSection() {
       <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-premium/5"></div>
       <div className="absolute top-20 left-10 w-32 h-32 bg-primary/10 rounded-full blur-3xl animate-float"></div>
       <div className="absolute bottom-20 right-10 w-48 h-48 bg-premium/10 rounded-full blur-3xl animate-float" style={{ animationDelay: '1s' }}></div>
-      
+
       <div className="container mx-auto max-w-6xl relative z-10">
         <div className="text-center space-y-8">
           {/* Badge */}
@@ -29,10 +29,9 @@ export default function HeroSection() {
                 AI-Powered SEO
               </span>
             </h1>
-            
+
             <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-              Transform ordinary posts into <strong className="text-primary">viral content</strong> with 
-              real-time SEO analysis, unlimited AI rewrites, and premium optimization tools.
+              Turn every content into <strong className='text-primary'>viral hits</strong> with real-time SEO insights, unlimited AI-powered rewrites, and premium optimization tools.
             </p>
           </div>
 
@@ -47,27 +46,27 @@ export default function HeroSection() {
               <div className="text-sm text-muted-foreground">Engagement Boost</div>
             </div>
             <div className="text-center">
-              <div className="text-2xl md:text-3xl font-bold text-primary">50K+</div>
+              <div className="text-2xl md:text-3xl font-bold text-primary">500K+</div>
               <div className="text-sm text-muted-foreground">Content Creators</div>
             </div>
           </div>
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Button 
-              variant="premium" 
-              size="xl" 
+            <Button
+              variant="premium"
+              size="xl"
               className="group w-full sm:w-auto"
             >
               <Crown className="h-5 w-5 mr-2" />
               Start 7-Day Free Trial
               <ArrowRight className="h-4 w-4 ml-2 group-hover:translate-x-1 transition-transform" />
             </Button>
-            
-            <Button 
-              variant="outline" 
+
+            <Button
+              variant="outline"
               size="xl"
-              className="w-full sm:w-auto hover:border-primary hover:text-primary"
+              className="w-full sm:w-auto hover:border-primary"
             >
               <BarChart3 className="h-5 w-5 mr-2" />
               Analyze Content Free

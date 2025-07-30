@@ -468,7 +468,7 @@ export default function SEOAnalyzer() {
               ) : (
                 <>
                   <Globe className="h-4 w-4" />
-                  Analyze SEO of your site or blog or post
+                  Analyze Website
                 </>
               )}
             </Button>
@@ -482,19 +482,19 @@ export default function SEOAnalyzer() {
           <CardTitle className="flex items-center gap-2 text-foreground">
             <Tag className="h-5 w-5 text-primary" />
             Content SEO Analyzer
-            <Badge variant="secondary" className="ml-auto">Enhanced</Badge>
+            <Badge variant="secondary" className="ml-auto">Hot</Badge>
           </CardTitle>
         </CardHeader>
         <CardContent>
           <Tabs defaultValue="url" className="w-full">
-            <TabsList className="grid w-full grid-cols-2">
+            <TabsList className="grid w-full grid-cols-2 bg-secondary">
               <TabsTrigger value="url" className="text-sm">
                 <Globe className="h-4 w-4 mr-2" />
                 Analyze by URL
               </TabsTrigger>
               <TabsTrigger value="text" className="text-sm">
                 <Code className="h-4 w-4 mr-2" />
-                Analyze Text Content
+                Analyze by Script
               </TabsTrigger>
             </TabsList>
             
@@ -503,9 +503,6 @@ export default function SEOAnalyzer() {
                 <label className="text-sm font-medium text-foreground">
                   Content URL (Blog Post, Article, Social Media Post)
                 </label>
-                <p className="text-xs text-muted-foreground mb-3">
-                  Analyze published content and get detailed audience demographics & engagement analytics
-                </p>
                 <div className="flex gap-3">
                   <Input
                     type="url"
@@ -539,15 +536,12 @@ export default function SEOAnalyzer() {
               <div className="space-y-2">
                 <div className="flex justify-between items-center">
                   <label className="text-sm font-medium text-foreground">
-                    Text Content to Analyze
+                    Content Script
                   </label>
                   <Badge variant="outline" className="text-xs">
                     {dailyUsage.wordsUsed}/{DAILY_WORD_LIMIT} words used today
                   </Badge>
                 </div>
-                <p className="text-xs text-muted-foreground mb-3">
-                  Paste your content below for SEO analysis (Free: 2,500 words/day)
-                </p>
                 <Textarea
                   placeholder="Paste your content here for SEO analysis..."
                   value={content}
@@ -575,8 +569,8 @@ export default function SEOAnalyzer() {
                       </>
                     ) : (
                       <>
-                        <Hash className="h-4 w-4" />
-                        Analyze SEO
+                        <BarChart className="h-4 w-4" />
+                        Analyze Script
                       </>
                     )}
                   </Button>

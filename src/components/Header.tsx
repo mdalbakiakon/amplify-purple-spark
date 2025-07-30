@@ -3,34 +3,30 @@ import { Button } from "@/components/ui/button";
 
 export default function Header() {
   return (
-    <header className="bg-card/50 backdrop-blur-lg border-b border-border sticky top-0 z-50">
-      <div className="container mx-auto px-4 py-4 flex items-center justify-between">
+    <header className="bg-card/50 backdrop-blur-lg sticky top-0 z-50">
+      <div className="container mx-auto px-2 py-2 flex items-center justify-between">
         {/* Logo */}
-        <div className="flex items-center gap-3">
-          <div className="relative">
-            <Zap className="h-8 w-8 text-primary animate-glow" />
-            <div className="absolute inset-0 animate-pulse-purple rounded-full opacity-50"></div>
-          </div>
+        <div className="flex items-center gap-10">
           <div>
             <h1 className="text-2xl font-bold bg-gradient-purple bg-clip-text text-transparent">
               AmplifyX
             </h1>
-            <p className="text-xs text-muted-foreground">Content Amplifier</p>
+            <p className="text-xs text-muted-foreground">Content SEO Amplifier</p>
           </div>
-        </div>
 
-        {/* Navigation */}
-        <nav className="hidden md:flex items-center gap-6">
-          <a href="#analyzer" className="text-foreground hover:text-primary transition-colors">
-            SEO Analyzer
-          </a>
-          <a href="#tools" className="text-foreground hover:text-primary transition-colors">
-            AI Tools
-          </a>
-          <a href="#pricing" className="text-foreground hover:text-primary transition-colors">
-            Pricing
-          </a>
-        </nav>
+          {/* Navigation */}
+          <nav className="hidden md:flex items-center gap-6">
+            <a href="#analyzer" className="text-foreground hover:text-primary transition-colors">
+              SEO Analyzer
+            </a>
+            <a href="#tools" className="text-foreground hover:text-primary transition-colors">
+              AI Tools
+            </a>
+            <a href="#pricing" className="text-foreground hover:text-primary transition-colors">
+              Pricing
+            </a>
+          </nav>
+        </div>
 
         {/* Actions */}
         <div className="flex items-center gap-3">
@@ -41,12 +37,12 @@ export default function Header() {
               1/1 boosts used
             </span>
           </div>
-          
+
           <Button variant="premium" size="sm" className="hidden md:flex">
             <Crown className="h-4 w-4" />
             Upgrade to Premium
           </Button>
-          
+
           <Button variant="ghost" size="icon">
             <User className="h-4 w-4" />
           </Button>
