@@ -30,8 +30,8 @@ export default function HeroSection() {
               </span>
             </h1>
 
-            <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-              Turn every content into <strong className='text-primary'>viral hits</strong> with real-time SEO insights, unlimited AI-powered rewrites, and premium optimization tools.
+            <p className="w-full text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+              Turn every content into <strong className='text-primary'>viral hits</strong> with real-time SEO insights, keyword research, unlimited AI-powered rewrites, and premium optimization tools.
             </p>
           </div>
 

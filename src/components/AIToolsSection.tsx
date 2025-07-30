@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
+import "../styles/custom-scrollbar.css";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { RefreshCw, Sparkles, Lock, TrendingUp, BarChart3, Copy, CheckCircle } from 'lucide-react';
@@ -256,7 +257,7 @@ ${platformConfig.hashtags}`;
                       onChange={(e) => {
                         setContent(e.target.value);
                       }}
-                      className="min-h-48 bg-background/50 border-border resize-none"
+                      className="min-h-48 bg-background/50 border-border resize-none custom-scrollbar"
                     />
                     <div className="flex justify-between items-center text-xs">
                       <span className={`${wordCount > DAILY_WORD_LIMIT * 0.9 ? 'text-warning' : 'text-muted-foreground'}`}>
@@ -281,13 +282,15 @@ ${platformConfig.hashtags}`;
                     )}
                   </div>
                   <div className={`min-h-48 bg-background/50 border ${rewrittenContent ? 'border-success/30' : 'border-border'} rounded-lg p-4`}>
-                    {rewrittenContent ? (
-                      <p className="text-sm whitespace-pre-line">{rewrittenContent}</p>
-                    ) : (
-                      <p className="text-muted-foreground text-sm">
-                        Your AI-optimized content will appear here after rewriting...
-                      </p>
-                    )}
+                    <div className="max-h-64 overflow-auto custom-scrollbar">
+                      {rewrittenContent ? (
+                        <p className="text-sm whitespace-pre-line">{rewrittenContent}</p>
+                      ) : (
+                        <p className="text-muted-foreground text-sm">
+                          Your AI-optimized content will appear here after rewriting...
+                        </p>
+                      )}
+                    </div>
                   </div>
                   
                   {rewrittenContent && (

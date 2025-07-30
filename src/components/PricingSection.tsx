@@ -1,27 +1,44 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Check, Crown, Zap, Star, Clock } from "lucide-react";
+import { Check, Crown, Zap, Star, Clock, Trophy } from "lucide-react";
 
 export default function PricingSection() {
   const features = {
     free: [
-      "Unlimited SEO analysis",
-      "1 SEO boost per week",
-      "10 AI rewrites per month",
-      "Basic analytics",
-      "Community support"
+      "Unlimited basic SEO analysis",
+      "1,500 AI words/day",
+      "3 keyword searches/day",
+      "1 SEO Boost/week",
+      "Custom style & tone",
+      "SEO & readability scorecard",
+      "Community support",
+      "No credit card needed"
     ],
+
     premium: [
       "Everything in Free",
-      "Unlimited SEO boosts",
-      "Unlimited AI rewrites", 
-      "Advanced analytics & history",
-      "Export as PDF/Markdown",
-      "Priority support",
-      "Style customization",
-      "Humanize AI detection"
+      "25,000 AI words/day",
+      "Advanced SEO with competitor insights",
+      "500 keyword searches/month",
+      "10 SEO Boosts/week",
+      "Export: PDF, DOCX, Markdown",
+      "Content history",
+      "Email support (24–48h)"
+    ],
+
+    pro: [
+      "Everything in Premium",
+      "Unlimited AI rewrites",
+      "Unlimited keyword research",
+      "Unlimited SEO Boosts",
+      "Humanize AI content",
+      "1-click content briefs",
+      "Team access (up to 3 users)",
+      "Advanced analytics",
+      "Priority support (<12h)"
     ]
+
   };
 
   return (
@@ -54,7 +71,7 @@ export default function PricingSection() {
         </div>
 
         {/* Pricing Cards */}
-        <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
           {/* Free Plan */}
           <Card className="bg-card/80 backdrop-blur border-border/50 relative flex flex-col h-full">
             <CardHeader className="text-center pb-8">
@@ -91,10 +108,10 @@ export default function PricingSection() {
                 Most Popular
               </Badge>
             </div>
-            
+
             {/* Glow Effect */}
             <div className="absolute inset-0 bg-gradient-premium opacity-5 animate-pulse"></div>
-            
+
             <CardHeader className="text-center pb-8 relative z-10">
               <div className="mx-auto w-12 h-12 bg-gradient-premium rounded-full flex items-center justify-center mb-4 animate-glow">
                 <Crown className="h-6 w-6 text-premium-foreground" />
@@ -117,7 +134,7 @@ export default function PricingSection() {
                   </li>
                 ))}
               </ul>
-              
+
               <div className="space-y-3">
                 <Button variant="premium" className="w-full" size="lg">
                   <Star className="h-4 w-4" />
@@ -137,6 +154,53 @@ export default function PricingSection() {
                 <p className="text-xs text-warning/80">
                   2 months free with annual plan - Expires in 3 days!
                 </p>
+              </div>
+            </CardContent>
+          </Card>
+          
+          {/* Pro Plan */}
+          <Card className="bg-card/80 backdrop-blur border-border/50 relative flex flex-col h-full overflow-visible">
+            {/* Pro Card Pulse Border Animation */}
+            <span className="pointer-events-none absolute -inset-1 rounded-2xl border-2 border-primary opacity-75 animate-pulse z-0"></span>
+            {/* Pro Badge (like Premium) */}
+            <div className="absolute top-4 right-4">
+              <Badge className="bg-primary text-primary-foreground flex items-center"><Trophy className="h-3 w-3 mr-1 text-primary-foreground" />Pro</Badge>
+            </div>
+            <CardHeader className="text-center pb-8">
+              <div className="mx-auto w-12 h-12 bg-gradient-purple rounded-full flex items-center justify-center mb-4">
+                <Trophy className="h-6 w-6 text-primary-foreground" />
+              </div>
+              <CardTitle className="text-2xl">Pro</CardTitle>
+              <div className="text-3xl font-bold">$39<span className="text-lg text-muted-foreground">/month</span></div>
+              <div className="text-pro">
+                or $390/year <Badge variant="outline" className="ml-1 text-xs">Save 16%</Badge>
+              </div>
+              <p className="text-muted-foreground">For agencies & power users</p>
+            </CardHeader>
+            <CardContent className="space-y-6 flex flex-col flex-1">
+              <ul className="space-y-3 flex-1">
+                {features.pro.map((feature, index) => (
+                  <li key={index} className="flex items-center gap-3">
+                    <Check className="h-4 w-4 text-primary flex-shrink-0" />
+                    <span className="text-sm">{feature}</span>
+                  </li>
+                ))}
+              </ul>
+              <div className="space-y-3">
+                <Button
+                  className="w-full bg-gradient-purple text-white hover:shadow-glow-purple hover:scale-105 transition-all duration-300 animate-glow border-0"
+                  size="lg"
+                >
+                  <Star className="h-4 w-4" />
+                  Start Pro Now
+                </Button>
+                <Button
+                  variant="premium-outline"
+                  className="w-full"
+                  size="lg"
+                >
+                  Choose Yearly (16% Off)
+                </Button>
               </div>
             </CardContent>
           </Card>
