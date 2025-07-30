@@ -6,7 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import "../styles/custom-scrollbar.css";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { RefreshCw, Sparkles, Lock, TrendingUp, BarChart3, Copy, CheckCircle } from 'lucide-react';
+import { RefreshCw, Sparkles, Lock, TrendingUp, BarChart3, Copy, CheckCircle, Briefcase, MessageCircle, Palette, GraduationCap, Smile, Target, BookOpen, Info, Book, Cog, Star, PenLine, Facebook, Instagram, Twitter, Linkedin, Youtube, Mail } from 'lucide-react';
 import { useDailyLimit } from '@/hooks/useDailyLimit';
 
 interface KeywordAnalytic {
@@ -193,12 +193,12 @@ ${platformConfig.hashtags}`;
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="professional">💼 Professional</SelectItem>
-                      <SelectItem value="conversational">💬 Conversational</SelectItem>
-                      <SelectItem value="creative">🎨 Creative</SelectItem>
-                      <SelectItem value="academic">🎓 Academic</SelectItem>
-                      <SelectItem value="casual">😊 Casual</SelectItem>
-                      <SelectItem value="persuasive">🎯 Persuasive</SelectItem>
+                      <SelectItem value="professional"><Briefcase className="inline w-4 h-4 mr-2 align-text-bottom" />Professional</SelectItem>
+                      <SelectItem value="conversational"><MessageCircle className="inline w-4 h-4 mr-2 align-text-bottom" />Conversational</SelectItem>
+                      <SelectItem value="creative"><Palette className="inline w-4 h-4 mr-2 align-text-bottom" />Creative</SelectItem>
+                      <SelectItem value="academic"><GraduationCap className="inline w-4 h-4 mr-2 align-text-bottom" />Academic</SelectItem>
+                      <SelectItem value="casual"><Smile className="inline w-4 h-4 mr-2 align-text-bottom" />Casual</SelectItem>
+                      <SelectItem value="persuasive"><Target className="inline w-4 h-4 mr-2 align-text-bottom" />Persuasive</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -211,11 +211,11 @@ ${platformConfig.hashtags}`;
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="engaging">✨ Engaging</SelectItem>
-                      <SelectItem value="informative">📚 Informative</SelectItem>
-                      <SelectItem value="storytelling">📖 Storytelling</SelectItem>
-                      <SelectItem value="technical">⚙️ Technical</SelectItem>
-                      <SelectItem value="inspirational">🌟 Inspirational</SelectItem>
+                      <SelectItem value="engaging"><Star className="inline w-4 h-4 mr-2 align-text-bottom" />Engaging</SelectItem>
+                      <SelectItem value="informative"><Info className="inline w-4 h-4 mr-2 align-text-bottom" />Informative</SelectItem>
+                      <SelectItem value="storytelling"><BookOpen className="inline w-4 h-4 mr-2 align-text-bottom" />Storytelling</SelectItem>
+                      <SelectItem value="technical"><Cog className="inline w-4 h-4 mr-2 align-text-bottom" />Technical</SelectItem>
+                      <SelectItem value="inspirational"><PenLine className="inline w-4 h-4 mr-2 align-text-bottom" />Inspirational</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -228,13 +228,13 @@ ${platformConfig.hashtags}`;
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="blog">📝 Blog Post</SelectItem>
-                      <SelectItem value="facebook">📘 Facebook Post</SelectItem>
-                      <SelectItem value="instagram">📸 Instagram Post</SelectItem>
-                      <SelectItem value="twitter">🐦 X (Twitter) Post</SelectItem>
-                      <SelectItem value="linkedin">💼 LinkedIn Post</SelectItem>
-                      <SelectItem value="youtube">🎥 YouTube Description</SelectItem>
-                      <SelectItem value="email">📧 Email Marketing</SelectItem>
+                      <SelectItem value="blog"><Book className="inline w-4 h-4 mr-2 align-text-bottom" />Blog Post</SelectItem>
+                      <SelectItem value="facebook"><Facebook className="inline w-4 h-4 mr-2 align-text-bottom" />Facebook Post</SelectItem>
+                      <SelectItem value="instagram"><Instagram className="inline w-4 h-4 mr-2 align-text-bottom" />Instagram Post</SelectItem>
+                      <SelectItem value="twitter"><Twitter className="inline w-4 h-4 mr-2 align-text-bottom" />X (Twitter) Post</SelectItem>
+                      <SelectItem value="linkedin"><Linkedin className="inline w-4 h-4 mr-2 align-text-bottom" />LinkedIn Post</SelectItem>
+                      <SelectItem value="youtube"><Youtube className="inline w-4 h-4 mr-2 align-text-bottom" />YouTube Description</SelectItem>
+                      <SelectItem value="email"><Mail className="inline w-4 h-4 mr-2 align-text-bottom" />Email Marketing</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
