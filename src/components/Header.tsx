@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 export default function Header() {
   return (
     <header className="bg-card/50 backdrop-blur-lg sticky top-0 z-50">
-      <div className="container mx-auto px-2 py-2 flex items-center justify-between">
+      <div className="container mx-auto px-4 py-2 flex items-center justify-between">
         {/* Logo */}
         <div className="flex items-center gap-10">
           <div>
