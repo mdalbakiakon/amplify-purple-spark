@@ -21,7 +21,7 @@ const Index = () => {
       <footer className="bg-card/30 border-t border-border py-12">
         <div className="container mx-auto px-4 text-center">
           <div className="flex items-center justify-center gap-3 mb-4">
-            <span className="text-xl font-bold bg-gradient-purple bg-clip-text text-transparent">
+            <span className="text-3xl font-bold bg-gradient-purple bg-clip-text text-transparent">
               AmplifyX
             </span>
           </div>

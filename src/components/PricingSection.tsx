@@ -7,9 +7,10 @@ export default function PricingSection() {
   const features = {
     free: [
       "Unlimited basic SEO analysis",
-      "1,500 AI words/day",
+      "1,500 words/day",
       "3 keyword searches/day",
       "1 SEO Boost/week",
+      "5 AI rewrites/week",
       "Custom style & tone",
       "SEO & readability scorecard",
       "Community support",
@@ -18,10 +19,11 @@ export default function PricingSection() {
 
     premium: [
       "Everything in Free",
-      "25,000 AI words/day",
+      "25,000 words/day",
       "Advanced SEO with competitor insights",
       "500 keyword searches/month",
       "10 SEO Boosts/week",
+      "100 AI rewrites/week",
       "Export: PDF, DOCX, Markdown",
       "Content history",
       "Email support (24–48h)"

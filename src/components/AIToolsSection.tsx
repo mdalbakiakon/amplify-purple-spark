@@ -172,15 +172,11 @@ ${platformConfig.hashtags}`;
           <Card className="bg-gradient-dark border-border/50">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Sparkles className="h-5 w-5 text-primary animate-glow" />
-                AmplifyX AI Content Rewriter
+                <Sparkles className="h-5 w-5 text-primary animate-glow" />AI Content Rewriter
                 <div className="ml-auto flex items-center gap-2">
                   <Badge variant={rewrites > 2 ? "secondary" : "outline"} 
-                         className={rewrites <= 2 ? "bg-warning/20 text-warning" : ""}>
-                    {rewrites}/10 rewrites left
-                  </Badge>
-                  <Badge variant="outline" className="bg-muted/20 text-muted-foreground border-muted-foreground/30">
-                    Daily: {dailyUsage.wordsUsed}/{DAILY_WORD_LIMIT} words
+                         className={(rewrites <= 2 ? "bg-warning/20 text-warning " : "") + "text-center w-full"}>
+                    Weekly: {rewrites}/10 rewrites
                   </Badge>
                 </div>
               </CardTitle>
@@ -248,8 +244,10 @@ ${platformConfig.hashtags}`;
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {/* Original Content */}
                 <div className="space-y-3">
-                  <Label htmlFor="content">Original Content</Label>
                   <div className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <Label htmlFor="content">Original Content</Label>
+                    </div>
                     <Textarea
                       id="content"
                       placeholder="Paste your content here to rewrite with AI..."
@@ -271,7 +269,7 @@ ${platformConfig.hashtags}`;
                 </div>
 
                 {/* AI-Optimized Content */}
-                <div className="space-y-3">
+                <div className="space-y-2">
                   <div className="flex items-center justify-between">
                     <Label>SEO-Boosted Content</Label>
                     {rewrittenContent && (
@@ -281,8 +279,8 @@ ${platformConfig.hashtags}`;
                       </Badge>
                     )}
                   </div>
-                  <div className={`min-h-48 bg-background/50 border ${rewrittenContent ? 'border-success/30' : 'border-border'} rounded-lg p-4`}>
-                    <div className="max-h-64 overflow-auto custom-scrollbar">
+                  <div className={`min-h-48 bg-background/50 border ${rewrittenContent ? 'border-success/30' : 'border-border'} rounded-lg p-4 flex flex-col justify-between`}>
+                    <div className="max-h-64 overflow-auto custom-scrollbar flex-1">
                       {rewrittenContent ? (
                         <p className="text-sm whitespace-pre-line">{rewrittenContent}</p>
                       ) : (
@@ -291,33 +289,32 @@ ${platformConfig.hashtags}`;
                         </p>
                       )}
                     </div>
+                    {rewrittenContent && (
+                      <div className="flex gap-3 mt-3">
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          className="flex-1"
+                          onClick={() => copyToClipboard(rewrittenContent, 'content')}
+                        >
+                          {copiedKeywords.includes('content') ? (
+                            <>
+                              <CheckCircle className="h-3 w-3 mr-1" />
+                              Copied!
+                            </>
+                          ) : (
+                            <>
+                              <Copy className="h-3 w-3 mr-1" />
+                              Copy Content
+                            </>
+                          )}
+                        </Button>
+                        <Button variant="default" size="sm" className="flex-1">
+                          Analyze New Content
+                        </Button>
+                      </div>
+                    )}
                   </div>
-                  
-                  {rewrittenContent && (
-                    <div className="flex gap-3">
-                      <Button 
-                        variant="outline" 
-                        size="sm" 
-                        className="flex-1"
-                        onClick={() => copyToClipboard(rewrittenContent, 'content')}
-                      >
-                        {copiedKeywords.includes('content') ? (
-                          <>
-                            <CheckCircle className="h-3 w-3 mr-1" />
-                            Copied!
-                          </>
-                        ) : (
-                          <>
-                            <Copy className="h-3 w-3 mr-1" />
-                            Copy Content
-                          </>
-                        )}
-                      </Button>
-                      <Button variant="default" size="sm" className="flex-1">
-                        Analyze New Content
-                      </Button>
-                    </div>
-                  )}
                 </div>
               </div>
 
@@ -332,22 +329,26 @@ ${platformConfig.hashtags}`;
                 {isRewriting ? (
                   <>
                     <div className="w-4 h-4 border-2 border-primary-foreground border-t-transparent rounded-full animate-spin" />
-                    Rewriting with AI...
+                    <span className="sm:inline hidden">Rewriting with AI...</span>
+                    <span className="inline sm:hidden">Rewriting...</span>
                   </>
                 ) : dailyUsage.isLimitReached ? (
                   <>
                     <Lock className="h-4 w-4" />
-                    Daily limit reached
+                    <span className="sm:inline hidden">Daily limit reached</span>
+                    <span className="inline sm:hidden">Limit reached</span>
                   </>
                 ) : rewrites <= 0 ? (
                   <>
                     <Lock className="h-4 w-4" />
-                    Monthly limit reached
+                    <span className="sm:inline hidden">Monthly limit reached</span>
+                    <span className="inline sm:hidden">Limit reached</span>
                   </>
                 ) : (
                   <>
                     <RefreshCw className="h-4 w-4" />
-                    Rewrite Content
+                    <span className="sm:inline hidden">Rewrite Content with SEO Optimization</span>
+                    <span className="inline sm:hidden">Rewrite Content</span>
                   </>
                 )}
               </Button>
