@@ -554,7 +554,7 @@ export default function SEOAnalyzer() {
                 />
                 <div className="flex justify-between items-center">
                   <span className="text-xs text-muted-foreground">
-                    {wordCount} words • {content.length} characters
+                    {wordCount} words
                   </span>
                   <Button 
                     onClick={analyzeContent}
