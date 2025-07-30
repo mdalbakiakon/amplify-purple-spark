@@ -155,81 +155,141 @@ export default function SEOAnalyzer() {
     // Simulate website crawling and analysis
     await new Promise(resolve => setTimeout(resolve, 3000));
     
-    // Extract domain for keyword suggestions
+    // Extract domain for consistent analysis
     const domain = websiteUrl.replace(/^https?:\/\//, '').replace(/^www\./, '').split('/')[0];
-    const isEcommerce = Math.random() > 0.5;
-    const framework = ['React', 'WordPress', 'Shopify', 'Wix', 'Squarespace'][Math.floor(Math.random() * 5)];
     
-    // Generate mock SEO issues with specific solutions
-    const mockIssues: SEOIssue[] = [
+    // Generate consistent analysis based on URL hash
+    const urlHash = domain.split('').reduce((a, b) => {
+      a = ((a << 5) - a) + b.charCodeAt(0);
+      return a & a;
+    }, 0);
+    
+    // Determine framework and type consistently
+    const frameworks = ['WordPress', 'React', 'Shopify', 'Wix', 'Squarespace'];
+    const framework = frameworks[Math.abs(urlHash) % frameworks.length];
+    const isEcommerce = Math.abs(urlHash) % 3 === 0;
+    
+    // Generate consistent SEO issues based on domain
+    const allPossibleIssues: SEOIssue[] = [
       {
         type: 'error',
         category: 'Meta Tags',
-        message: 'Missing meta description - Add the copyable meta tag below',
+        message: 'Missing meta description - Critical for search rankings',
         impact: 'high'
       },
       {
         type: 'warning',
         category: 'Title Tag',
-        message: 'Title tag needs optimization - Use the improved version below',
+        message: 'Title tag exceeds 60 characters - May be truncated in search results',
         impact: 'medium'
       },
       {
         type: 'error',
         category: 'Headers',
-        message: 'Missing H1 tag - Add proper heading structure',
+        message: 'Multiple H1 tags found - Should have only one H1 per page',
         impact: 'high'
       },
       {
         type: 'warning',
         category: 'Images',
-        message: '3 images missing alt tags - Copy the code examples below',
+        message: '5 images missing alt attributes - Affects accessibility and SEO',
         impact: 'medium'
       },
       {
-        type: 'success',
-        category: 'Performance',
-        message: 'Page load speed is good (2.3s)',
-        impact: 'low'
-      },
-      {
         type: 'error',
-        category: 'Keywords',
-        message: 'Low keyword density - Use suggested keywords below',
+        category: 'Performance',
+        message: 'Page load speed is slow (4.2s) - Recommended under 3s',
         impact: 'high'
       },
       {
         type: 'warning',
-        category: 'Schema Markup',
-        message: `Missing ${isEcommerce ? 'Product' : 'Article'} schema - Add the code below`,
+        category: 'Keywords',
+        message: 'Low keyword density (0.8%) - Recommended 1-3%',
+        impact: 'medium'
+      },
+      {
+        type: 'error',
+        category: 'Internal Links',
+        message: 'Insufficient internal linking - Add more contextual links',
         impact: 'medium'
       },
       {
         type: 'warning',
-        category: 'Open Graph',
-        message: 'Missing social media meta tags - Copy the tags below',
+        category: 'Mobile',
+        message: 'Mobile viewport not optimized - May affect mobile rankings',
+        impact: 'high'
+      },
+      {
+        type: 'error',
+        category: 'Schema',
+        message: 'Missing structured data markup - Add Schema.org markup',
         impact: 'medium'
+      },
+      {
+        type: 'success',
+        category: 'SSL',
+        message: 'HTTPS properly configured',
+        impact: 'low'
       }
     ];
     
-    const mockScores: SEOScore = {
-      overall: Math.floor(Math.random() * 30) + 45, // 45-75 (websites usually score lower)
-      keyword: Math.floor(Math.random() * 25) + 40,  // 40-65
-      readability: Math.floor(Math.random() * 30) + 60, // 60-90
-      engagement: Math.floor(Math.random() * 25) + 50   // 50-75
+    // Select consistent issues based on URL hash
+    const mockIssues: SEOIssue[] = allPossibleIssues.filter((_, index) => 
+      (Math.abs(urlHash + index) % 3) !== 0
+    ).slice(0, 6);
+    
+    // Generate consistent scores based on URL hash
+    const baseScore = 35 + (Math.abs(urlHash) % 40);
+    const mockScores = {
+      overall: Math.max(35, Math.min(85, baseScore + (urlHash % 10))),
+      keyword: Math.max(40, Math.min(80, baseScore + ((urlHash * 2) % 15))),
+      readability: Math.max(45, Math.min(90, baseScore + ((urlHash * 3) % 20))),
+      engagement: Math.max(40, Math.min(85, baseScore + ((urlHash * 4) % 12))),
     };
     
-    // Generate suggested keywords based on domain
-    const suggestedKeywords = generateKeywords(domain, isEcommerce);
+    // Generate consistent keyword suggestions based on domain
+    const domainName = domain.split('.')[0];
+    const keywordSuggestions = [
+      { 
+        keyword: `${domainName} services`, 
+        difficulty: 'medium', 
+        volume: `${2 + (Math.abs(urlHash) % 5)}.${(Math.abs(urlHash * 2) % 9) + 1}K`, 
+        cpc: `$${(2 + (Math.abs(urlHash) % 3)).toFixed(2)}0` 
+      },
+      { 
+        keyword: `best ${domainName}`, 
+        difficulty: 'high', 
+        volume: `${8 + (Math.abs(urlHash * 3) % 10)}.${(Math.abs(urlHash * 4) % 9) + 1}K`, 
+        cpc: `$${(3 + (Math.abs(urlHash * 2) % 3)).toFixed(2)}0` 
+      },
+      { 
+        keyword: `${domainName} reviews`, 
+        difficulty: 'low', 
+        volume: `${1 + (Math.abs(urlHash * 5) % 4)}.${(Math.abs(urlHash * 6) % 9) + 1}K`, 
+        cpc: `$${(1 + (Math.abs(urlHash * 3) % 2)).toFixed(2)}0` 
+      },
+      { 
+        keyword: `top ${domainName} company`, 
+        difficulty: 'medium', 
+        volume: `${3 + (Math.abs(urlHash * 7) % 6)}.${(Math.abs(urlHash * 8) % 9) + 1}K`, 
+        cpc: `$${(2 + (Math.abs(urlHash * 4) % 2)).toFixed(2)}0` 
+      },
+      { 
+        keyword: `${domainName} near me`, 
+        difficulty: 'low', 
+        volume: `${5 + (Math.abs(urlHash * 9) % 8)}.${(Math.abs(urlHash * 10) % 9) + 1}K`, 
+        cpc: `$${(2 + (Math.abs(urlHash * 5) % 3)).toFixed(2)}0` 
+      },
+    ];
     
     setWebsiteSEO({
       url: websiteUrl,
       title: `Home - ${domain.charAt(0).toUpperCase() + domain.slice(1)}`,
-      metaDescription: Math.random() > 0.5 ? 'Basic meta description found - needs optimization' : undefined,
+      metaDescription: Math.abs(urlHash) % 2 === 0 ? 'Basic meta description found - needs optimization' : undefined,
       issues: mockIssues,
       score: mockScores,
       framework,
-      keywords: suggestedKeywords,
+      keywords: keywordSuggestions.map(k => k.keyword),
       isEcommerce
     });
     

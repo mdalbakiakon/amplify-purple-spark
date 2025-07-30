@@ -1,80 +1,157 @@
-import { useState } from "react";
+import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
-import { Wand2, RefreshCw, Lock, Sparkles, User, Briefcase } from "lucide-react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { RefreshCw, Sparkles, Lock, TrendingUp, BarChart3, Copy, CheckCircle } from 'lucide-react';
+import { useDailyLimit } from '@/hooks/useDailyLimit';
 
-export default function AIToolsSection() {
-  const [content, setContent] = useState("");
-  const [style, setStyle] = useState("professional");
-  const [platform, setPlatform] = useState("blog");
-  const [humanize, setHumanize] = useState(false);
+interface KeywordAnalytic {
+  keyword: string;
+  performance: 'high' | 'medium';
+  volume: string;
+  difficulty: string;
+  cpc: string;
+}
+
+const AIToolsSection = () => {
+  const [content, setContent] = useState('');
+  const [rewrittenContent, setRewrittenContent] = useState('');
+  const [tone, setTone] = useState('professional');
+  const [style, setStyle] = useState('engaging');
+  const [platform, setPlatform] = useState('blog');
   const [isRewriting, setIsRewriting] = useState(false);
-  const [wordCount, setWordCount] = useState(0);
-  const FREE_WORD_LIMIT = 2500;
-  const [rewrittenContent, setRewrittenContent] = useState("");
-  const [rewrites, setRewrites] = useState(8); // Mock: 8/10 used
-  const [keywordAnalytics, setKeywordAnalytics] = useState<any[]>([]);
+  const [rewrites, setRewrites] = useState(5);
+  const [keywordAnalytics, setKeywordAnalytics] = useState<KeywordAnalytic[]>([]);
+  const [copiedKeywords, setCopiedKeywords] = useState<string[]>([]);
+
+  const { dailyUsage, updateUsage, canGenerate, DAILY_WORD_LIMIT } = useDailyLimit();
+  const wordCount = content.split(/\s+/).filter(word => word.length > 0).length;
 
   const handleRewrite = async () => {
     if (!content.trim() || rewrites <= 0) return;
     
+    const estimatedWords = Math.ceil(content.split(/\s+/).length * 1.2); // Estimate 20% expansion
+    
+    if (!canGenerate(estimatedWords)) {
+      alert(`Daily limit reached! You have ${dailyUsage.remainingWords} words remaining today.`);
+      return;
+    }
+    
     setIsRewriting(true);
     
-    // Simulate API call
+    // Simulate AI rewriting with platform-specific optimization
     await new Promise(resolve => setTimeout(resolve, 3000));
     
-    // Enhanced AI rewriting based on style and platform
-    const styleModifiers = {
-      professional: "Transform your content with executive-level clarity and industry authority: ",
-      conversational: "Reimagine your message with authentic, engaging dialogue that connects: ",
-      creative: "Infuse your content with imaginative storytelling and compelling narratives: ",
-      academic: "Elevate your writing with scholarly precision and analytical depth: ",
-      casual: "Simplify your message with approachable, everyday language that resonates: ",
-      persuasive: "Craft compelling arguments that influence and inspire action: ",
-      technical: "Present complex information with clarity and technical accuracy: ",
-      storytelling: "Weave your message into captivating stories that engage and inspire: "
-    };
-
-    const platformModifiers = {
-      blog: "Optimized for blog readability with engaging headlines and SEO structure: ",
-      facebook: "Crafted for Facebook engagement with compelling hooks and shareable content: ",
-      instagram: "Designed for Instagram with visual appeal and hashtag optimization: ",
-      twitter: "Tailored for Twitter with concise, impactful messaging and trending topics: ",
-      linkedin: "Professional LinkedIn content that builds authority and drives engagement: ",
-      youtube: "YouTube description optimized for discovery and viewer retention: ",
-      email: "Email marketing copy that drives opens, clicks, and conversions: ",
-      website: "Website copy that converts visitors into customers: "
+    // Advanced platform-specific content generation
+    const platformOptimizations = {
+      blog: {
+        prefix: "## ",
+        structure: "comprehensive analysis with headers, bullet points, and actionable insights",
+        cta: "Read more insights on our blog and subscribe for weekly updates.",
+        hashtags: ""
+      },
+      facebook: {
+        prefix: "🌟 ",
+        structure: "engaging story format with emojis and social proof",
+        cta: "Like and share if this resonates with you! 💙",
+        hashtags: "#SocialMedia #Growth #Marketing"
+      },
+      instagram: {
+        prefix: "✨ ",
+        structure: "visual storytelling with line breaks and emojis",
+        cta: "Double-tap if you agree! Save this post for later 📱",
+        hashtags: "#Instagram #ContentCreator #Digital #Growth #Inspiration"
+      },
+      twitter: {
+        prefix: "🔥 ",
+        structure: "concise thread-worthy content with key takeaways",
+        cta: "Retweet to share this insight with your network!",
+        hashtags: "#TwitterTips #Marketing #Growth"
+      },
+      linkedin: {
+        prefix: "🎯 ",
+        structure: "professional insights with industry statistics and thought leadership",
+        cta: "What's your experience with this? Share your thoughts in the comments.",
+        hashtags: "#LinkedIn #Professional #Business #Strategy"
+      },
+      youtube: {
+        prefix: "🎬 ",
+        structure: "engaging script format with hooks, timestamps, and viewer engagement",
+        cta: "Don't forget to like, subscribe, and hit the notification bell! 🔔",
+        hashtags: "#YouTube #ContentCreator #Tutorial"
+      },
+      email: {
+        prefix: "📧 ",
+        structure: "personalized email format with clear subject line and actionable content",
+        cta: "Reply to this email with your thoughts - I read every response!",
+        hashtags: ""
+      }
     };
     
-    let rewritten = platformModifiers[platform as keyof typeof platformModifiers] + 
-                   styleModifiers[style as keyof typeof styleModifiers] + content;
+    const platformConfig = platformOptimizations[platform as keyof typeof platformOptimizations];
+    const optimizedContent = `${platformConfig.prefix}${content}
     
-    // Add humanization if enabled (premium feature simulation)
-    if (humanize) {
-      rewritten = rewritten.replace(/\b(utilize|implement|facilitate)\b/gi, (match) => {
-        const replacements = { utilize: 'use', implement: 'put in place', facilitate: 'help' };
-        return replacements[match.toLowerCase() as keyof typeof replacements] || match;
-      });
-    }
+📈 SEO-Optimized for ${platform.charAt(0).toUpperCase() + platform.slice(1)}
+✅ ${tone.charAt(0).toUpperCase() + tone.slice(1)} tone applied
+🎯 ${style.charAt(0).toUpperCase() + style.slice(1)} writing style
+📊 ${platformConfig.structure}
 
-    // Generate keyword analytics (simulated)
-    const mockKeywords = [
-      { keyword: "SEO optimization", performance: "high", searchVolume: "8,100", competition: "medium", difficulty: 45 },
-      { keyword: "content marketing", performance: "high", searchVolume: "6,800", competition: "high", difficulty: 62 },
-      { keyword: "digital strategy", performance: "medium", searchVolume: "4,200", competition: "low", difficulty: 28 },
-      { keyword: "audience engagement", performance: "medium", searchVolume: "3,900", competition: "medium", difficulty: 38 },
-      { keyword: "brand awareness", performance: "medium", searchVolume: "2,700", competition: "low", difficulty: 22 }
+${platformConfig.cta}
+
+${platformConfig.hashtags}`;
+    
+    setRewrittenContent(optimizedContent);
+    setRewrites(prev => prev - 1);
+    
+    // Update daily usage
+    const actualWords = optimizedContent.split(/\s+/).length;
+    updateUsage(actualWords);
+    
+    // Generate consistent keyword analytics based on content
+    const contentHash = content.split('').reduce((a, b) => {
+      a = ((a << 5) - a) + b.charCodeAt(0);
+      return a & a;
+    }, 0);
+    
+    const allKeywords = [
+      { keyword: "digital marketing", performance: "high", volume: "12.5K", difficulty: "medium", cpc: "$3.40" },
+      { keyword: "content strategy", performance: "high", volume: "8.2K", difficulty: "low", cpc: "$2.80" },
+      { keyword: "social media", performance: "medium", volume: "45.1K", difficulty: "high", cpc: "$4.20" },
+      { keyword: "brand awareness", performance: "medium", volume: "6.7K", difficulty: "medium", cpc: "$3.10" },
+      { keyword: "engagement rate", performance: "medium", volume: "3.4K", difficulty: "low", cpc: "$2.60" },
+      { keyword: "SEO optimization", performance: "high", volume: "18.3K", difficulty: "medium", cpc: "$4.80" },
+      { keyword: "content marketing", performance: "high", volume: "22.1K", difficulty: "medium", cpc: "$3.90" },
+      { keyword: "online presence", performance: "medium", volume: "7.8K", difficulty: "low", cpc: "$2.40" },
+      { keyword: "target audience", performance: "medium", volume: "9.2K", difficulty: "medium", cpc: "$3.20" },
+      { keyword: "conversion rate", performance: "medium", volume: "15.6K", difficulty: "high", cpc: "$5.20" }
     ];
     
-    setKeywordAnalytics(mockKeywords);
-    setRewrittenContent(rewritten);
-    setRewrites(prev => prev - 1);
+    // Select 5 keywords consistently based on content hash
+    const selectedKeywords = allKeywords
+      .filter((_, index) => (Math.abs(contentHash + index) % 2) === 0)
+      .slice(0, 5)
+      .map((keyword, index) => ({
+        ...keyword,
+        performance: index < 2 ? "high" : "medium" // First 2 are high performance
+      }));
+    
+    setKeywordAnalytics(selectedKeywords as KeywordAnalytic[]);
     setIsRewriting(false);
+  };
+
+  const copyToClipboard = async (text: string, type: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopiedKeywords(prev => [...prev, type]);
+      setTimeout(() => {
+        setCopiedKeywords(prev => prev.filter(item => item !== type));
+      }, 2000);
+    } catch (err) {
+      console.error('Failed to copy text: ', err);
+    }
   };
 
   return (
@@ -90,23 +167,20 @@ export default function AIToolsSection() {
           </p>
         </div>
 
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-6xl mx-auto">
           <Card className="bg-gradient-dark border-border/50">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Wand2 className="h-5 w-5 text-primary animate-glow" />
-                AI Content Rewriter
+                <Sparkles className="h-5 w-5 text-primary animate-glow" />
+                AmplifyX AI Content Rewriter
                 <div className="ml-auto flex items-center gap-2">
-                  <Badge variant={rewrites > 5 ? "secondary" : "outline"} 
+                  <Badge variant={rewrites > 2 ? "secondary" : "outline"} 
                          className={rewrites <= 2 ? "bg-warning/20 text-warning" : ""}>
                     {rewrites}/10 rewrites left
                   </Badge>
-                  {rewrites <= 2 && (
-                    <Badge variant="outline" className="bg-premium/20 text-premium border-premium/30">
-                      <Lock className="h-3 w-3 mr-1" />
-                      Premium: Unlimited
-                    </Badge>
-                  )}
+                  <Badge variant="outline" className="bg-muted/20 text-muted-foreground border-muted-foreground/30">
+                    Daily: {dailyUsage.wordsUsed}/{DAILY_WORD_LIMIT} words
+                  </Badge>
                 </div>
               </CardTitle>
             </CardHeader>
@@ -114,10 +188,10 @@ export default function AIToolsSection() {
             <CardContent className="space-y-6">
               {/* Controls */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {/* Style Selection */}
+                {/* Tone Selection */}
                 <div className="space-y-3">
-                  <Label>Writing Style</Label>
-                  <Select value={style} onValueChange={setStyle}>
+                  <Label>Writing Tone</Label>
+                  <Select value={tone} onValueChange={setTone}>
                     <SelectTrigger className="bg-background/50">
                       <SelectValue />
                     </SelectTrigger>
@@ -128,8 +202,23 @@ export default function AIToolsSection() {
                       <SelectItem value="academic">🎓 Academic</SelectItem>
                       <SelectItem value="casual">😊 Casual</SelectItem>
                       <SelectItem value="persuasive">🎯 Persuasive</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {/* Style Selection */}
+                <div className="space-y-3">
+                  <Label>Writing Style</Label>
+                  <Select value={style} onValueChange={setStyle}>
+                    <SelectTrigger className="bg-background/50">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="engaging">✨ Engaging</SelectItem>
+                      <SelectItem value="informative">📚 Informative</SelectItem>
+                      <SelectItem value="storytelling">📖 Storytelling</SelectItem>
                       <SelectItem value="technical">⚙️ Technical</SelectItem>
-                      <SelectItem value="storytelling">📚 Storytelling</SelectItem>
+                      <SelectItem value="inspirational">🌟 Inspirational</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -149,28 +238,8 @@ export default function AIToolsSection() {
                       <SelectItem value="linkedin">💼 LinkedIn Post</SelectItem>
                       <SelectItem value="youtube">🎥 YouTube Description</SelectItem>
                       <SelectItem value="email">📧 Email Marketing</SelectItem>
-                      <SelectItem value="website">🌐 Website Copy</SelectItem>
                     </SelectContent>
                   </Select>
-                </div>
-
-                {/* Humanize Toggle */}
-                <div className="space-y-3">
-                  <Label>AI Detection</Label>
-                  <div className="flex items-center space-x-2 bg-background/50 p-3 rounded-lg border border-border">
-                    <Switch
-                      id="humanize"
-                      checked={humanize}
-                      onCheckedChange={setHumanize}
-                    />
-                    <Label htmlFor="humanize" className="text-sm">
-                      Humanize content
-                    </Label>
-                    <Badge variant="outline" className="ml-auto bg-premium/20 text-premium border-premium/30">
-                      <Sparkles className="h-3 w-3 mr-1" />
-                      Premium
-                    </Badge>
-                  </div>
                 </div>
               </div>
 
@@ -185,31 +254,17 @@ export default function AIToolsSection() {
                       placeholder="Paste your content here to rewrite with AI..."
                       value={content}
                       onChange={(e) => {
-                        const newContent = e.target.value;
-                        const words = newContent.trim().split(/\s+/).filter(word => word.length > 0);
-                        const currentWordCount = words.length;
-                        
-                        if (currentWordCount <= FREE_WORD_LIMIT) {
-                          setContent(newContent);
-                          setWordCount(currentWordCount);
-                        } else {
-                          // Truncate to word limit
-                          const truncated = words.slice(0, FREE_WORD_LIMIT).join(' ');
-                          setContent(truncated);
-                          setWordCount(FREE_WORD_LIMIT);
-                        }
+                        setContent(e.target.value);
                       }}
                       className="min-h-48 bg-background/50 border-border resize-none"
                     />
                     <div className="flex justify-between items-center text-xs">
-                      <span className={`${wordCount > FREE_WORD_LIMIT * 0.9 ? 'text-warning' : 'text-muted-foreground'}`}>
-                        {wordCount} / {FREE_WORD_LIMIT.toLocaleString()} words
+                      <span className={`${wordCount > DAILY_WORD_LIMIT * 0.9 ? 'text-warning' : 'text-muted-foreground'}`}>
+                        Input: {wordCount} words
                       </span>
-                      {wordCount >= FREE_WORD_LIMIT && (
-                        <span className="text-primary font-medium">
-                          Upgrade to Premium for unlimited words
-                        </span>
-                      )}
+                      <span className={`${dailyUsage.wordsUsed > DAILY_WORD_LIMIT * 0.8 ? 'text-warning' : 'text-muted-foreground'}`}>
+                        Daily: {dailyUsage.wordsUsed} / {DAILY_WORD_LIMIT.toLocaleString()} words
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -237,8 +292,23 @@ export default function AIToolsSection() {
                   
                   {rewrittenContent && (
                     <div className="flex gap-3">
-                      <Button variant="outline" size="sm" className="flex-1">
-                        Copy to Clipboard
+                      <Button 
+                        variant="outline" 
+                        size="sm" 
+                        className="flex-1"
+                        onClick={() => copyToClipboard(rewrittenContent, 'content')}
+                      >
+                        {copiedKeywords.includes('content') ? (
+                          <>
+                            <CheckCircle className="h-3 w-3 mr-1" />
+                            Copied!
+                          </>
+                        ) : (
+                          <>
+                            <Copy className="h-3 w-3 mr-1" />
+                            Copy Content
+                          </>
+                        )}
                       </Button>
                       <Button variant="default" size="sm" className="flex-1">
                         Analyze New Content
@@ -251,15 +321,20 @@ export default function AIToolsSection() {
               {/* Action Button */}
               <Button 
                 onClick={handleRewrite}
-                disabled={!content.trim() || isRewriting || rewrites <= 0}
+                disabled={!content.trim() || isRewriting || rewrites <= 0 || dailyUsage.isLimitReached}
                 className="w-full"
-                variant={rewrites > 0 ? "boost" : "outline"}
+                variant={rewrites > 0 && !dailyUsage.isLimitReached ? "boost" : "outline"}
                 size="lg"
               >
                 {isRewriting ? (
                   <>
                     <div className="w-4 h-4 border-2 border-primary-foreground border-t-transparent rounded-full animate-spin" />
                     Rewriting with AI...
+                  </>
+                ) : dailyUsage.isLimitReached ? (
+                  <>
+                    <Lock className="h-4 w-4" />
+                    Daily limit reached
                   </>
                 ) : rewrites <= 0 ? (
                   <>
@@ -275,13 +350,24 @@ export default function AIToolsSection() {
               </Button>
 
               {/* Usage Warning */}
-              {rewrites <= 2 && rewrites > 0 && (
+              {dailyUsage.remainingWords <= 500 && dailyUsage.remainingWords > 0 && (
+                <div className="bg-warning/10 border border-warning/20 rounded-lg p-4">
+                  <p className="text-sm text-warning">
+                    ⚠️ Only {dailyUsage.remainingWords} words remaining today. 
+                    <Button variant="link" className="p-0 ml-1 text-premium h-auto">
+                      Upgrade to Premium
+                    </Button> for unlimited daily access.
+                  </p>
+                </div>
+              )}
+              
+              {rewrites <= 2 && rewrites > 0 && !dailyUsage.isLimitReached && (
                 <div className="bg-warning/10 border border-warning/20 rounded-lg p-4">
                   <p className="text-sm text-warning">
                     ⚠️ Only {rewrites} rewrites remaining this month. 
                     <Button variant="link" className="p-0 ml-1 text-premium h-auto">
                       Upgrade to Premium
-                    </Button> for unlimited access.
+                    </Button> for unlimited monthly access.
                   </p>
                 </div>
               )}
@@ -298,31 +384,39 @@ export default function AIToolsSection() {
                   
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {keywordAnalytics.map((keyword, index) => (
-                      <div key={index} className="bg-background/30 border border-border rounded-lg p-4 space-y-2">
+                      <div key={index} className="bg-background/30 border border-border rounded-lg p-4 space-y-3">
                         <div className="flex items-center justify-between">
-                          <span className="font-medium text-sm">{keyword.keyword}</span>
-                          <Badge 
-                            variant={keyword.performance === 'high' ? 'default' : 'secondary'}
-                            className={keyword.performance === 'high' 
-                              ? 'bg-success/20 text-success border-success/30' 
-                              : 'bg-warning/20 text-warning border-warning/30'
-                            }
-                          >
-                            {keyword.performance}
-                          </Badge>
+                          <span className="font-medium">{keyword.keyword}</span>
+                          <div className="flex gap-2">
+                            <Badge variant={keyword.performance === 'high' ? 'default' : 'secondary'} className="text-xs">
+                              {keyword.performance === 'high' ? 'High SEO' : 'Medium SEO'}
+                            </Badge>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className="h-6 w-6 p-0"
+                              onClick={() => copyToClipboard(keyword.keyword, keyword.keyword)}
+                            >
+                              {copiedKeywords.includes(keyword.keyword) ? (
+                                <CheckCircle className="h-3 w-3 text-success" />
+                              ) : (
+                                <Copy className="h-3 w-3" />
+                              )}
+                            </Button>
+                          </div>
                         </div>
                         <div className="text-xs text-muted-foreground space-y-1">
                           <div className="flex justify-between">
-                            <span>Search Volume:</span>
-                            <span className="font-medium">{keyword.searchVolume}/mo</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span>Competition:</span>
-                            <span className="font-medium">{keyword.competition}</span>
+                            <span>Volume:</span>
+                            <span className="font-medium">{keyword.volume}/mo</span>
                           </div>
                           <div className="flex justify-between">
                             <span>Difficulty:</span>
-                            <span className="font-medium">{keyword.difficulty}/100</span>
+                            <span className="font-medium">{keyword.difficulty}</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span>CPC:</span>
+                            <span className="font-medium">{keyword.cpc}</span>
                           </div>
                         </div>
                       </div>
@@ -331,7 +425,7 @@ export default function AIToolsSection() {
                   
                   <div className="bg-premium/10 border border-premium/20 rounded-lg p-4">
                     <p className="text-sm text-premium">
-                      🚀 <strong>Upgrade to Premium</strong> for 10 keywords with 5+ high-performance keywords and advanced SEO analytics!
+                      🚀 <strong>Upgrade to Premium</strong> for 10 keywords with 5+ high-performance keywords and real-time analytics!
                     </p>
                   </div>
                 </div>
@@ -342,4 +436,6 @@ export default function AIToolsSection() {
       </div>
     </section>
   );
-}
+};
+
+export default AIToolsSection;
