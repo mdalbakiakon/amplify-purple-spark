@@ -56,7 +56,7 @@ export default function PricingSection() {
         {/* Pricing Cards */}
         <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
           {/* Free Plan */}
-          <Card className="bg-card/80 backdrop-blur border-border/50 relative">
+          <Card className="bg-card/80 backdrop-blur border-border/50 relative flex flex-col h-full">
             <CardHeader className="text-center pb-8">
               <div className="mx-auto w-12 h-12 bg-muted rounded-full flex items-center justify-center mb-4">
                 <Zap className="h-6 w-6 text-muted-foreground" />
@@ -65,8 +65,8 @@ export default function PricingSection() {
               <div className="text-3xl font-bold">$0</div>
               <p className="text-muted-foreground">Perfect for trying out AmplifyX</p>
             </CardHeader>
-            <CardContent className="space-y-6">
-              <ul className="space-y-3">
+            <CardContent className="space-y-6 flex flex-col flex-1">
+              <ul className="space-y-3 flex-1">
                 {features.free.map((feature, index) => (
                   <li key={index} className="flex items-center gap-3">
                     <Check className="h-4 w-4 text-success flex-shrink-0" />
@@ -74,9 +74,11 @@ export default function PricingSection() {
                   </li>
                 ))}
               </ul>
-              <Button variant="outline" className="w-full" size="lg">
-                Current Plan
-              </Button>
+              <div className="mt-4">
+                <Button variant="outline" className="w-full" size="lg">
+                  Current Plan
+                </Button>
+              </div>
             </CardContent>
           </Card>
 
