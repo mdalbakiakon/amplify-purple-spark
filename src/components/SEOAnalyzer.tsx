@@ -713,10 +713,10 @@ export default function SEOAnalyzer() {
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="flex gap-3">
+              <div className="flex flex-col sm:flex-row gap-3">
                 <Input
                   type="url"
-                  placeholder="Enter your website URL (e.g., https://example.com)"
+                  placeholder="Enter your website URL"
                   value={websiteUrl}
                   onChange={(e) => setWebsiteUrl(e.target.value)}
                   className="flex-1 bg-background/50 border-border"
@@ -760,24 +760,24 @@ export default function SEOAnalyzer() {
               <Tabs defaultValue="url" className="w-full">
                 <TabsList className="grid w-full grid-cols-2 bg-secondary">
                   <TabsTrigger value="url" className="text-sm">
-                    <Globe className="h-4 w-4 mr-2" />
+                    <Globe className="h-4 w-4 mr-2 hidden sm:block" />
                     Analyze by URL
                   </TabsTrigger>
                   <TabsTrigger value="text" className="text-sm">
-                    <Code className="h-4 w-4 mr-2" />
+                    <Code className="h-4 w-4 mr-2 hidden sm:block" />
                     Analyze by Script
                   </TabsTrigger>
                 </TabsList>
 
                 <TabsContent value="url" className="space-y-4 mt-4">
                   <div className="space-y-2">
-                    <label className="text-sm font-medium text-foreground">
+                    <label className="text-[0.8rem] sm:text-sm font-medium text-foreground">
                       Content URL (Blog Post, Article, Social Media Post)
                     </label>
-                    <div className="flex gap-3">
+                    <div className="flex flex-col sm:flex-row gap-3">
                       <Input
                         type="url"
-                        placeholder="Enter content URL (e.g., blog post, article link)"
+                        placeholder="Enter content URL"
                         value={contentUrl}
                         onChange={(e) => setContentUrl(e.target.value)}
                         className="flex-1 bg-background/50 border-border"
@@ -811,11 +811,11 @@ export default function SEOAnalyzer() {
                 <TabsContent value="text" className="space-y-4 mt-4">
                   <div className="space-y-2">
                     <div className="flex justify-between items-center">
-                      <label className="text-sm font-medium text-foreground">
+                      <label className="text-[0.8rem] sm:text-sm font-medium text-foreground">
                         Content Script
                       </label>
                       <Badge variant="outline" className="text-xs">
-                        {dailyUsage.wordsUsed}/{DAILY_WORD_LIMIT} words used today
+                        {dailyUsage.wordsUsed}/{DAILY_WORD_LIMIT} words used
                       </Badge>
                     </div>
                     <Textarea
