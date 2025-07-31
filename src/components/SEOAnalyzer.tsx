@@ -71,28 +71,28 @@ export default function SEOAnalyzer() {
 
   // Backend API base URL - fallback to mock analysis if not available
   const API_BASE_URL = 'http://localhost:4000';
-  
+
   // Enhanced website analysis with better scraping
   const analyzeWebsiteAdvanced = async (url: string) => {
     console.log('Starting advanced website analysis for:', url);
-    
+
     try {
       // Ensure URL has protocol
       const fullUrl = url.startsWith('http') ? url : `https://${url}`;
       console.log('Full URL:', fullUrl);
-      
+
       // Try to fetch the page directly for basic analysis
       const response = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(fullUrl)}`);
       const data = await response.json();
-      
+
       if (!data.contents) {
         throw new Error('Could not fetch page content');
       }
-      
+
       // Parse HTML content
       const parser = new DOMParser();
       const doc = parser.parseFromString(data.contents, 'text/html');
-      
+
       // Extract SEO elements
       const title = doc.querySelector('title')?.textContent || '';
       const metaDesc = doc.querySelector('meta[name="description"]')?.getAttribute('content') || '';
@@ -102,13 +102,13 @@ export default function SEOAnalyzer() {
       const totalImages = doc.querySelectorAll('img').length;
       const internalLinks = doc.querySelectorAll('a[href^="/"], a[href*="' + fullUrl + '"]').length;
       const externalLinks = doc.querySelectorAll('a[href^="http"]:not([href*="' + fullUrl + '"])').length;
-      
+
       // Calculate word count
       const bodyText = doc.body?.textContent || '';
       const wordCount = bodyText.split(/\s+/).filter(word => word.length > 0).length;
-      
+
       console.log('Extracted data:', { title, metaDesc, h1, wordCount, imgWithoutAlt, totalImages });
-      
+
       return {
         title,
         metaDesc,
@@ -122,7 +122,7 @@ export default function SEOAnalyzer() {
         hasSSL: fullUrl.startsWith('https://'),
         url: fullUrl
       };
-      
+
     } catch (error) {
       console.error('Advanced analysis failed:', error);
       throw error;
@@ -198,7 +198,7 @@ export default function SEOAnalyzer() {
       const keywordScore = Math.min(95, Math.max(30, keywordData.density * 20));
       const readabilityScore = Math.min(95, Math.max(40, 100 - (content.split(' ').length > 300 ? 20 : 0)));
       const engagementScore = Math.min(95, Math.max(35, 60 + (content.includes('?') ? 10 : 0) + (content.includes('!') ? 5 : 0)));
-      
+
       const scores: SEOScore = {
         overall: Math.round((keywordScore + readabilityScore + engagementScore) / 3),
         keyword: keywordScore,
@@ -231,26 +231,26 @@ export default function SEOAnalyzer() {
       // Ensure URL has protocol
       const fullUrl = contentUrl.startsWith('http') ? contentUrl : `https://${contentUrl}`;
       console.log('Analyzing content URL:', fullUrl);
-      
+
       // Use allorigins.win to bypass CORS
       const response = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(fullUrl)}`);
       const data = await response.json();
-      
+
       if (!data.contents) {
         throw new Error('Could not fetch content');
       }
-      
+
       // Parse HTML content
       const parser = new DOMParser();
       const doc = parser.parseFromString(data.contents, 'text/html');
-      
+
       // Extract content data
       const title = doc.querySelector('title')?.textContent || '';
       const metaDesc = doc.querySelector('meta[name="description"]')?.getAttribute('content') || '';
       const h1 = doc.querySelector('h1')?.textContent || '';
       const bodyText = doc.body?.textContent || '';
       const wordCount = bodyText.split(/\s+/).filter(word => word.length > 0).length;
-      
+
       // Analyze keywords (simple frequency analysis)
       const words = bodyText.toLowerCase().match(/\b\w{4,}\b/g) || [];
       const wordFreq: { [key: string]: number } = {};
@@ -259,9 +259,9 @@ export default function SEOAnalyzer() {
           wordFreq[word] = (wordFreq[word] || 0) + 1;
         }
       });
-      
+
       const topKeywords = Object.entries(wordFreq)
-        .sort(([,a], [,b]) => b - a)
+        .sort(([, a], [, b]) => b - a)
         .slice(0, 5)
         .map(([word]) => word);
 
@@ -281,7 +281,7 @@ export default function SEOAnalyzer() {
       // Generate realistic analytics based on content quality and length
       const baseReach = Math.max(500, wordCount * 2);
       const qualityMultiplier = contentScores.overall / 100;
-      
+
       const analytics: ContentAnalytics = {
         estimatedReach: Math.round(baseReach * qualityMultiplier * (1 + Math.random() * 0.5)),
         demographics: [
@@ -308,18 +308,18 @@ export default function SEOAnalyzer() {
         platform: fullUrl.includes('linkedin') ? 'LinkedIn' :
           fullUrl.includes('facebook') ? 'Facebook' :
             fullUrl.includes('instagram') ? 'Instagram' :
-              fullUrl.includes('medium') ? 'Medium' : 
-              fullUrl.includes('substack') ? 'Substack' : 'Blog'
+              fullUrl.includes('medium') ? 'Medium' :
+                fullUrl.includes('substack') ? 'Substack' : 'Blog'
       };
 
       console.log('Content analysis results:', { contentScores, topKeywords, wordCount });
 
       setScores(contentScores);
       setContentAnalytics(analytics);
-      
+
     } catch (error) {
       console.error('Content URL analysis failed:', error);
-      
+
       // Provide fallback analysis
       const fallbackScores: SEOScore = {
         overall: 45,
@@ -327,7 +327,7 @@ export default function SEOAnalyzer() {
         readability: 50,
         engagement: 45
       };
-      
+
       const fallbackAnalytics: ContentAnalytics = {
         estimatedReach: 800,
         demographics: [
@@ -349,7 +349,7 @@ export default function SEOAnalyzer() {
         bestTimeToPost: "1:00 PM",
         platform: 'Web'
       };
-      
+
       setScores(fallbackScores);
       setContentAnalytics(fallbackAnalytics);
     }
@@ -403,7 +403,7 @@ export default function SEOAnalyzer() {
       // First try advanced analysis with direct scraping
       const analysisData = await analyzeWebsiteAdvanced(websiteUrl);
       console.log('Analysis data received:', analysisData);
-      
+
       // Build comprehensive SEO issues based on real analysis
       const issues: SEOIssue[] = [];
 
@@ -562,20 +562,20 @@ export default function SEOAnalyzer() {
       }
 
       // Calculate comprehensive SEO scores
-      const titleScore = !analysisData.title ? 0 : 
-        analysisData.title.length > 60 ? 60 : 
-        analysisData.title.length < 30 ? 70 : 90;
-      
-      const metaScore = !analysisData.metaDesc ? 0 : 
-        analysisData.metaDesc.length > 160 ? 65 : 
-        analysisData.metaDesc.length < 120 ? 75 : 95;
-      
-      const contentScore = analysisData.wordCount < 300 ? 40 : 
+      const titleScore = !analysisData.title ? 0 :
+        analysisData.title.length > 60 ? 60 :
+          analysisData.title.length < 30 ? 70 : 90;
+
+      const metaScore = !analysisData.metaDesc ? 0 :
+        analysisData.metaDesc.length > 160 ? 65 :
+          analysisData.metaDesc.length < 120 ? 75 : 95;
+
+      const contentScore = analysisData.wordCount < 300 ? 40 :
         analysisData.wordCount > 1000 ? 90 : 70;
-      
-      const technicalScore = (analysisData.hasSSL ? 25 : 0) + 
-        (analysisData.h1 ? 25 : 0) + 
-        (analysisData.imgWithoutAlt === 0 ? 25 : 10) + 
+
+      const technicalScore = (analysisData.hasSSL ? 25 : 0) +
+        (analysisData.h1 ? 25 : 0) +
+        (analysisData.imgWithoutAlt === 0 ? 25 : 10) +
         (analysisData.internalLinks > 2 ? 25 : 10);
 
       const scores: SEOScore = {
@@ -588,7 +588,7 @@ export default function SEOAnalyzer() {
       // Extract domain and generate realistic keywords
       const domain = analysisData.url.replace(/^https?:\/\//, '').replace(/^www\./, '').split('/')[0];
       const domainName = domain.split('.')[0];
-      
+
       // Generate keywords based on title and content
       const titleWords = analysisData.title.toLowerCase().split(/\s+/).filter(word => word.length > 3);
       const keywordSuggestions = [
@@ -600,8 +600,8 @@ export default function SEOAnalyzer() {
       ].filter(Boolean).slice(0, 5);
 
       // Detect if it's likely an e-commerce site
-      const isEcommerce = analysisData.title.toLowerCase().includes('shop') || 
-        analysisData.title.toLowerCase().includes('store') || 
+      const isEcommerce = analysisData.title.toLowerCase().includes('shop') ||
+        analysisData.title.toLowerCase().includes('store') ||
         analysisData.title.toLowerCase().includes('buy') ||
         domain.includes('shop') || domain.includes('store');
 
@@ -620,7 +620,7 @@ export default function SEOAnalyzer() {
 
     } catch (error) {
       console.error('Website analysis completely failed:', error);
-      
+
       // Provide meaningful error feedback
       setWebsiteSEO({
         url: websiteUrl,
@@ -695,7 +695,7 @@ export default function SEOAnalyzer() {
       <div className="container mx-auto px-4">
         {/* Header */}
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">Own Your 
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">Own Your
             <span className="bg-gradient-purple bg-clip-text text-transparent"> SEO Insights</span>
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
@@ -957,12 +957,15 @@ export default function SEOAnalyzer() {
           {websiteSEO && (
             <Card className="bg-card/80 backdrop-blur border-border/50">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Sparkles className="h-5 w-5 text-primary animate-glow" />
-                  Website SEO Analysis - {websiteSEO.url}
-                  <Badge variant="outline" className={`ml-auto ${getScoreColor(websiteSEO.score.overall)}`}>
-                    {websiteSEO.score.overall}% Overall
-                  </Badge>
+                <CardTitle className="flex flex-col justify-center gap-2">
+                  <div className="flex items-center gap-2">
+                    <Sparkles className="h-5 w-5 text-primary animate-glow" />
+                    <span>Website SEO Analysis</span>
+                    <Badge variant="outline" className={`ml-auto ${getScoreColor(websiteSEO.score.overall)}`}>
+                      {websiteSEO.score.overall}% Overall
+                    </Badge>
+                  </div>
+                  <span className="text-primary text-[0.9rem] sm:text-xl">{websiteSEO.url}</span>
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-6">
