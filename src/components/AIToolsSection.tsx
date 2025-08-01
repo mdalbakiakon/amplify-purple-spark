@@ -87,7 +87,7 @@ const AIToolsSection = () => {
             <CardContent className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div className="space-y-3">
-                  <Label>Writing Tone</Label>
+                  <Label>Content Tone</Label>
                   <Select value={tone} onValueChange={setTone}>
                     <SelectTrigger className="bg-background/50">
                       <SelectValue placeholder="Select tone" />
@@ -104,7 +104,7 @@ const AIToolsSection = () => {
                 </div>
 
                 <div className="space-y-3">
-                  <Label>Writing Style</Label>
+                  <Label>Content Style</Label>
                   <Select value={style} onValueChange={setStyle}>
                     <SelectTrigger className="bg-background/50">
                       <SelectValue placeholder="Select style" />
