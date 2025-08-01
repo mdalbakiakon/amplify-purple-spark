@@ -6,7 +6,15 @@ import { Textarea } from "@/components/ui/textarea";
 import "../styles/custom-scrollbar.css";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { RefreshCw, Sparkles, Lock, Copy, CheckCircle } from 'lucide-react';
+import { RefreshCw, Sparkles, Lock, Copy, CheckCircle, Briefcase, MessageCircle, Palette, GraduationCap, Smile, Target, BookOpen, Info, Cog, Star, PenLine, Facebook, Instagram, Twitter, Linkedin, Youtube, Mail } from 'lucide-react';
+
+interface KeywordAnalytic {
+  keyword: string;
+  performance: 'high' | 'medium';
+  volume: string;
+  difficulty: string;
+  cpc: string;
+}
 
 const AIToolsSection = () => {
   const [content, setContent] = useState('');
@@ -15,29 +23,42 @@ const AIToolsSection = () => {
   const [style, setStyle] = useState('engaging');
   const [platform, setPlatform] = useState('blog');
   const [isRewriting, setIsRewriting] = useState(false);
-  const [copied, setCopied] = useState(false);
+  const [rewrites, setRewrites] = useState(5);
+  const [keywordAnalytics, setKeywordAnalytics] = useState<KeywordAnalytic[]>([]);
+  const [copiedKeywords, setCopiedKeywords] = useState<string[]>([]);
+
+  const wordCount = content.split(/\s+/).filter(word => word.length > 0).length;
 
   const handleRewrite = async () => {
-    if (!content.trim()) return;
+    if (!content.trim() || rewrites <= 0) return;
     
     setIsRewriting(true);
     
     try {
-      /* 
-      REAL API INTEGRATION POINT:
-      const response = await fetch('/api/rewrite-content', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ content, tone, style, platform })
-      });
-      const data = await response.json();
-      setRewrittenContent(data.optimizedContent);
-      */
+      // This is where you'll call your actual API
+      // const response = await fetch('/api/rewrite-content', {
+      //   method: 'POST',
+      //   headers: { 'Content-Type': 'application/json' },
+      //   body: JSON.stringify({ content, tone, style, platform })
+      // });
+      // const data = await response.json();
       
-      // TEMPORARY: Just clear the output area until API is connected
-      setRewrittenContent('');
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      // Simulating API delay
+      await new Promise(resolve => setTimeout(resolve, 1500));
       
+      // For now, just return the original content
+      // Replace this with actual API response when ready:
+      // setRewrittenContent(data.optimizedContent);
+      // setKeywordAnalytics(data.keywords);
+      setRewrittenContent(content);
+      
+      // Mock keywords - remove when using real API
+      setKeywordAnalytics([
+        { keyword: "example-keyword", performance: "high", volume: "10K", difficulty: "medium", cpc: "$3.50" },
+        { keyword: "sample-term", performance: "medium", volume: "5K", difficulty: "low", cpc: "$2.20" }
+      ]);
+      
+      setRewrites(prev => prev - 1);
     } catch (error) {
       console.error("Content rewriting failed:", error);
     } finally {
@@ -45,12 +66,13 @@ const AIToolsSection = () => {
     }
   };
 
-  const copyToClipboard = async () => {
-    if (!rewrittenContent) return;
+  const copyToClipboard = async (text: string, type: string) => {
     try {
-      await navigator.clipboard.writeText(rewrittenContent);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
+      await navigator.clipboard.writeText(text);
+      setCopiedKeywords(prev => [...prev, type]);
+      setTimeout(() => {
+        setCopiedKeywords(prev => prev.filter(item => item !== type));
+      }, 2000);
     } catch (err) {
       console.error('Failed to copy text: ', err);
     }
@@ -61,10 +83,10 @@ const AIToolsSection = () => {
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            AI Content Optimizer
+            AI-Powered <span className="bg-gradient-purple bg-clip-text text-transparent">Content Tools</span>
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Get SEO-optimized content tailored for your platform
+            Rewrite and optimize your content with advanced AI algorithms
           </p>
         </div>
 
@@ -72,93 +94,113 @@ const AIToolsSection = () => {
           <Card className="bg-gradient-dark border-border/50">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Sparkles className="h-5 w-5 text-primary" />
-                Content Rewriter
+                <Sparkles className="h-5 w-5 text-primary animate-glow" />AI Content Rewriter
+                <div className="ml-auto flex items-center gap-2">
+                  <Badge variant={rewrites > 2 ? "secondary" : "outline"} 
+                         className={(rewrites <= 2 ? "bg-warning/20 text-warning " : "") + "text-center w-full"}>
+                    Rewrites left: {rewrites}/5
+                  </Badge>
+                </div>
               </CardTitle>
             </CardHeader>
             
             <CardContent className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="space-y-2">
-                  <Label>Tone</Label>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {/* Tone Selector */}
+                <div className="space-y-3">
+                  <Label>Writing Tone</Label>
                   <Select value={tone} onValueChange={setTone}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select tone" />
+                    <SelectTrigger className="bg-background/50">
+                      <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="professional">Professional</SelectItem>
-                      <SelectItem value="conversational">Conversational</SelectItem>
-                      <SelectItem value="creative">Creative</SelectItem>
+                      <SelectItem value="professional"><Briefcase className="inline w-4 h-4 mr-2 align-text-bottom" />Professional</SelectItem>
+                      <SelectItem value="conversational"><MessageCircle className="inline w-4 h-4 mr-2 align-text-bottom" />Conversational</SelectItem>
+                      <SelectItem value="creative"><Palette className="inline w-4 h-4 mr-2 align-text-bottom" />Creative</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
 
-                <div className="space-y-2">
-                  <Label>Style</Label>
+                {/* Style Selector */}
+                <div className="space-y-3">
+                  <Label>Writing Style</Label>
                   <Select value={style} onValueChange={setStyle}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select style" />
+                    <SelectTrigger className="bg-background/50">
+                      <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="engaging">Engaging</SelectItem>
-                      <SelectItem value="informative">Informative</SelectItem>
+                      <SelectItem value="engaging"><Star className="inline w-4 h-4 mr-2 align-text-bottom" />Engaging</SelectItem>
+                      <SelectItem value="informative"><Info className="inline w-4 h-4 mr-2 align-text-bottom" />Informative</SelectItem>
+                      <SelectItem value="technical"><Cog className="inline w-4 h-4 mr-2 align-text-bottom" />Technical</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
 
-                <div className="space-y-2">
-                  <Label>Platform</Label>
+                {/* Platform Selector */}
+                <div className="space-y-3">
+                  <Label>Content Platform</Label>
                   <Select value={platform} onValueChange={setPlatform}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select platform" />
+                    <SelectTrigger className="bg-background/50">
+                      <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="blog">Blog</SelectItem>
-                      <SelectItem value="social">Social Media</SelectItem>
-                      <SelectItem value="email">Email</SelectItem>
+                      <SelectItem value="blog"><BookOpen className="inline w-4 h-4 mr-2 align-text-bottom" />Blog</SelectItem>
+                      <SelectItem value="social"><Facebook className="inline w-4 h-4 mr-2 align-text-bottom" />Social Media</SelectItem>
+                      <SelectItem value="email"><Mail className="inline w-4 h-4 mr-2 align-text-bottom" />Email</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                <div className="space-y-2">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {/* Original Content */}
+                <div className="space-y-3">
                   <Label>Original Content</Label>
                   <Textarea
                     placeholder="Paste your content here..."
                     value={content}
                     onChange={(e) => setContent(e.target.value)}
-                    className="min-h-48"
+                    className="min-h-48 bg-background/50 border-border"
                   />
+                  <div className="text-xs text-muted-foreground">
+                    {wordCount} words
+                  </div>
                 </div>
 
-                <div className="space-y-2">
-                  <Label>Optimized Content</Label>
-                  <div className={`min-h-48 border rounded-lg p-4 ${
-                    rewrittenContent ? 'border-success/30 bg-success/5' : 'border-border'
-                  }`}>
+                {/* Optimized Content - Now clean without placeholders */}
+                <div className="space-y-3">
+                  <div className="flex justify-between items-center">
+                    <Label>Optimized Content</Label>
+                    {rewrittenContent && (
+                      <Badge variant="outline" className="bg-success/20 text-success">
+                        Optimized
+                      </Badge>
+                    )}
+                  </div>
+                  <div className={`min-h-48 bg-background/50 border rounded-lg p-4 ${rewrittenContent ? 'border-success/30' : 'border-border'}`}>
                     {rewrittenContent ? (
                       <>
                         <div className="max-h-64 overflow-auto custom-scrollbar">
-                          <p className="whitespace-pre-line">{rewrittenContent}</p>
+                          <p className="text-sm whitespace-pre-line">{rewrittenContent}</p>
                         </div>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          className="mt-3 w-full"
-                          onClick={copyToClipboard}
-                        >
-                          {copied ? (
-                            <CheckCircle className="h-4 w-4 mr-2" />
-                          ) : (
-                            <Copy className="h-4 w-4 mr-2" />
-                          )}
-                          {copied ? 'Copied!' : 'Copy Content'}
-                        </Button>
+                        <div className="flex gap-3 mt-3">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => copyToClipboard(rewrittenContent, 'content')}
+                          >
+                            {copiedKeywords.includes('content') ? (
+                              <CheckCircle className="h-3 w-3 mr-1" />
+                            ) : (
+                              <Copy className="h-3 w-3 mr-1" />
+                            )}
+                            {copiedKeywords.includes('content') ? 'Copied!' : 'Copy'}
+                          </Button>
+                        </div>
                       </>
                     ) : (
                       <p className="text-muted-foreground text-sm">
-                        {isRewriting ? 'Optimizing...' : 'Optimized content will appear here'}
+                        Your optimized content will appear here...
                       </p>
                     )}
                   </div>
@@ -167,13 +209,13 @@ const AIToolsSection = () => {
 
               <Button
                 onClick={handleRewrite}
-                disabled={!content.trim() || isRewriting}
+                disabled={!content.trim() || isRewriting || rewrites <= 0}
                 className="w-full"
                 size="lg"
               >
                 {isRewriting ? (
                   <>
-                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
+                    <div className="w-4 h-4 border-2 border-primary-foreground border-t-transparent rounded-full animate-spin" />
                     Optimizing...
                   </>
                 ) : (
@@ -183,6 +225,36 @@ const AIToolsSection = () => {
                   </>
                 )}
               </Button>
+
+              {keywordAnalytics.length > 0 && (
+                <div className="space-y-4">
+                  <Label className="text-base font-semibold">Suggested Keywords</Label>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    {keywordAnalytics.map((keyword, index) => (
+                      <div key={index} className="bg-background/30 border rounded-lg p-3">
+                        <div className="flex justify-between items-center">
+                          <span className="font-medium">{keyword.keyword}</span>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => copyToClipboard(keyword.keyword, keyword.keyword)}
+                          >
+                            {copiedKeywords.includes(keyword.keyword) ? (
+                              <CheckCircle className="h-3 w-3 text-success" />
+                            ) : (
+                              <Copy className="h-3 w-3" />
+                            )}
+                          </Button>
+                        </div>
+                        <div className="text-xs text-muted-foreground mt-1">
+                          <div>Volume: {keyword.volume}/mo</div>
+                          <div>Difficulty: {keyword.difficulty}</div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </CardContent>
           </Card>
         </div>
