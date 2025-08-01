@@ -11,16 +11,16 @@ const Index = () => {
       <Header />
       <main>
         <HeroSection />
-        <div className="container mx-auto px-4 py-20">
+        <div className="container mx-auto px-4 py-12">
           <SEOAnalyzer />
         </div>
-        <div className="container mx-auto px-4 py-20">
+        <div className="container mx-auto px-4 py-12">
           <KeywordResearch />
         </div>
-        <div className="container mx-auto px-4 py-20">
+        <div className="container mx-auto px-4 py-12">
           <AIToolsSection />
         </div>
-        <div className="container mx-auto px-4 py-20">
+        <div className="container mx-auto px-4 py-12">
           <PricingSection />
         </div>
       </main>

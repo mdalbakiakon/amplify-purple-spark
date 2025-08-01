@@ -60,7 +60,7 @@ const AIToolsSection = () => {
 
   return (
     <section id="tools" className="py-16">
-      <div className="container mx-auto px-4">
+      <div className="container px-0">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
             AI-Powered <span className="bg-gradient-purple bg-clip-text text-transparent">Content Optimizer</span>
