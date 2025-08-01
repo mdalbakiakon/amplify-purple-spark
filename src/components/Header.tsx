@@ -8,10 +8,9 @@ export default function Header() {
         {/* Logo */}
         <div className="flex items-center gap-10">
           <div>
-            <h1 className="text-2xl font-bold bg-gradient-purple bg-clip-text text-transparent">
+            <h1 className="text-3xl font-bold bg-gradient-purple bg-clip-text text-transparent">
               AmplifyX
             </h1>
-            <p className="text-xs text-muted-foreground">Content SEO Amplifier</p>
           </div>
 
           {/* Navigation */}

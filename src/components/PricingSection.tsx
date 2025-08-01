@@ -121,7 +121,7 @@ export default function PricingSection() {
               <CardTitle className="text-2xl">Premium</CardTitle>
               <div className="space-y-2">
                 <div className="text-3xl font-bold">$15<span className="text-lg text-muted-foreground">/month</span></div>
-                <div className="text-premium">
+                <div className="text-premium font-bold">
                   or $120/year <Badge variant="outline" className="ml-1 text-xs">Save 33%</Badge>
                 </div>
               </div>
@@ -174,7 +174,7 @@ export default function PricingSection() {
               </div>
               <CardTitle className="text-2xl">Pro</CardTitle>
               <div className="text-3xl font-bold">$39<span className="text-lg text-muted-foreground">/month</span></div>
-              <div className="text-pro">
+              <div className="text-pro text-primary font-bold">
                 or $390/year <Badge variant="outline" className="ml-1 text-xs">Save 16%</Badge>
               </div>
               <p className="text-muted-foreground">For agencies & power users</p>

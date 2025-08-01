@@ -111,7 +111,7 @@ export default function SEOAnalyzer() {
           </p>
         </div>
         <div className="space-y-6">
-          {/* Website SEO Analyzer */}
+          {/* Website SEO Analyzer - First section */}
           <Card className="bg-gradient-dark border-border/50">
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-foreground">
@@ -163,7 +163,7 @@ export default function SEOAnalyzer() {
             </CardContent>
           </Card>
 
-          {/* Content SEO Analyzer */}
+          {/* Content SEO Analyzer - Second section with reordered tabs */}
           <Card className="bg-gradient-dark border-border/50">
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-foreground">
@@ -173,65 +173,19 @@ export default function SEOAnalyzer() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <Tabs defaultValue="url" className="w-full">
-                <TabsList className="grid w-full grid-cols-2 bg-secondary">
-                  <TabsTrigger value="url" className="text-sm">
-                    <Globe className="h-4 w-4 mr-2 hidden sm:block" />
-                    Analyze by URL
-                  </TabsTrigger>
-                  <TabsTrigger value="text" className="text-sm">
+              <Tabs defaultValue="text" className="w-full">
+                <TabsList className="grid w-full md:w-1/2 md:m-auto lg:w-1/3 grid-cols-2 bg-secondary">
+                  <TabsTrigger value="text" className="text-xs sm:text-sm">
                     <Code className="h-4 w-4 mr-2 hidden sm:block" />
-                    Analyze by Script
+                    Written Content
+                  </TabsTrigger>
+                  <TabsTrigger value="url" className="text-xs sm:text-sm">
+                    <Globe className="h-4 w-4 mr-2 hidden sm:block" />
+                    Published URL
                   </TabsTrigger>
                 </TabsList>
 
-                <TabsContent value="url" className="space-y-4 mt-4">
-                  <div className="space-y-2">
-                    <label className="text-[0.8rem] sm:text-sm font-medium text-foreground">
-                      Content URL (Blog Post, Article, Social Media Post)
-                    </label>
-                    <div className="flex flex-col sm:flex-row gap-3">
-                      <Input
-                        type="url"
-                        placeholder="Enter content URL"
-                        value={contentUrl}
-                        onChange={(e) => setContentUrl(e.target.value)}
-                        className="flex-1 bg-background/50 border-border"
-                        onKeyDown={(e) => {
-                          if (e.key === 'Enter' && contentUrl.trim() && !isAnalyzingContent) {
-                            setIsAnalyzingContent(true);
-                            setTimeout(() => {
-                              setIsAnalyzingContent(false);
-                            }, 2000);
-                          }
-                        }}
-                      />
-                      <Button
-                        onClick={() => {
-                          setIsAnalyzingContent(true);
-                          setTimeout(() => {
-                            setIsAnalyzingContent(false);
-                          }, 2000);
-                        }}
-                        disabled={!contentUrl.trim() || isAnalyzingContent}
-                        variant="default"
-                      >
-                        {isAnalyzingContent ? (
-                          <>
-                            <div className="w-4 h-4 border-2 border-primary-foreground border-t-transparent rounded-full animate-spin" />
-                            Analyzing...
-                          </>
-                        ) : (
-                          <>
-                            <BarChart className="h-4 w-4" />
-                            Analyze Content
-                          </>
-                        )}
-                      </Button>
-                    </div>
-                  </div>
-                </TabsContent>
-
+                {/* Analyze by Script - First tab */}
                 <TabsContent value="text" className="space-y-4 mt-4">
                   <div className="space-y-2">
                     <div className="flex justify-between items-center">
@@ -275,6 +229,54 @@ export default function SEOAnalyzer() {
                           <>
                             <BarChart className="h-4 w-4" />
                             Analyze Script
+                          </>
+                        )}
+                      </Button>
+                    </div>
+                  </div>
+                </TabsContent>
+
+                {/* Analyze by URL - Second tab */}
+                <TabsContent value="url" className="space-y-4 mt-4">
+                  <div className="space-y-2">
+                    <label className="text-[0.8rem] sm:text-sm font-medium text-foreground">
+                      Content URL (Blog Post, Article, Social Media Post)
+                    </label>
+                    <div className="flex flex-col sm:flex-row gap-3">
+                      <Input
+                        type="url"
+                        placeholder="Enter content URL"
+                        value={contentUrl}
+                        onChange={(e) => setContentUrl(e.target.value)}
+                        className="flex-1 bg-background/50 border-border"
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter' && contentUrl.trim() && !isAnalyzingContent) {
+                            setIsAnalyzingContent(true);
+                            setTimeout(() => {
+                              setIsAnalyzingContent(false);
+                            }, 2000);
+                          }
+                        }}
+                      />
+                      <Button
+                        onClick={() => {
+                          setIsAnalyzingContent(true);
+                          setTimeout(() => {
+                            setIsAnalyzingContent(false);
+                          }, 2000);
+                        }}
+                        disabled={!contentUrl.trim() || isAnalyzingContent}
+                        variant="default"
+                      >
+                        {isAnalyzingContent ? (
+                          <>
+                            <div className="w-4 h-4 border-2 border-primary-foreground border-t-transparent rounded-full animate-spin" />
+                            Analyzing...
+                          </>
+                        ) : (
+                          <>
+                            <BarChart className="h-4 w-4" />
+                            Analyze Content
                           </>
                         )}
                       </Button>
