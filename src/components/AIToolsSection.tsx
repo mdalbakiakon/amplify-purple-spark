@@ -7,7 +7,6 @@ import "../styles/custom-scrollbar.css";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { RefreshCw, Sparkles, Lock, TrendingUp, BarChart3, Copy, CheckCircle, Briefcase, MessageCircle, Palette, GraduationCap, Smile, Target, BookOpen, Info, Book, Cog, Star, PenLine, Facebook, Instagram, Twitter, Linkedin, Youtube, Mail } from 'lucide-react';
-import { useDailyLimit } from '@/hooks/useDailyLimit';
 
 interface KeywordAnalytic {
   keyword: string;
@@ -28,18 +27,10 @@ const AIToolsSection = () => {
   const [keywordAnalytics, setKeywordAnalytics] = useState<KeywordAnalytic[]>([]);
   const [copiedKeywords, setCopiedKeywords] = useState<string[]>([]);
 
-  const { dailyUsage, updateUsage, canGenerate, DAILY_WORD_LIMIT } = useDailyLimit();
   const wordCount = content.split(/\s+/).filter(word => word.length > 0).length;
 
   const handleRewrite = async () => {
     if (!content.trim() || rewrites <= 0) return;
-    
-    const estimatedWords = Math.ceil(content.split(/\s+/).length * 1.2); // Estimate 20% expansion
-    
-    if (!canGenerate(estimatedWords)) {
-      alert(`Daily limit reached! You have ${dailyUsage.remainingWords} words remaining today.`);
-      return;
-    }
     
     setIsRewriting(true);
     
@@ -106,10 +97,6 @@ ${platformConfig.hashtags}`;
     
     setRewrittenContent(optimizedContent);
     setRewrites(prev => prev - 1);
-    
-    // Update daily usage
-    const actualWords = optimizedContent.split(/\s+/).length;
-    updateUsage(actualWords);
     
     // Generate consistent keyword analytics based on content
     const contentHash = content.split('').reduce((a, b) => {
@@ -258,11 +245,8 @@ ${platformConfig.hashtags}`;
                       className="min-h-48 bg-background/50 border-border resize-none custom-scrollbar"
                     />
                     <div className="flex justify-between items-center text-xs">
-                      <span className={`${wordCount > DAILY_WORD_LIMIT * 0.9 ? 'text-warning' : 'text-muted-foreground'}`}>
+                      <span className="text-muted-foreground">
                         Input: {wordCount} words
-                      </span>
-                      <span className={`${dailyUsage.wordsUsed > DAILY_WORD_LIMIT * 0.8 ? 'text-warning' : 'text-muted-foreground'}`}>
-                        Daily: {dailyUsage.wordsUsed} / {DAILY_WORD_LIMIT.toLocaleString()} words
                       </span>
                     </div>
                   </div>
@@ -321,9 +305,9 @@ ${platformConfig.hashtags}`;
               {/* Action Button */}
               <Button 
                 onClick={handleRewrite}
-                disabled={!content.trim() || isRewriting || rewrites <= 0 || dailyUsage.isLimitReached}
+                disabled={!content.trim() || isRewriting || rewrites <= 0}
                 className="w-full"
-                variant={rewrites > 0 && !dailyUsage.isLimitReached ? "boost" : "outline"}
+                variant={rewrites > 0 ? "boost" : "outline"}
                 size="lg"
               >
                 {isRewriting ? (
@@ -331,12 +315,6 @@ ${platformConfig.hashtags}`;
                     <div className="w-4 h-4 border-2 border-primary-foreground border-t-transparent rounded-full animate-spin" />
                     <span className="sm:inline hidden">Rewriting with AI...</span>
                     <span className="inline sm:hidden">Rewriting...</span>
-                  </>
-                ) : dailyUsage.isLimitReached ? (
-                  <>
-                    <Lock className="h-4 w-4" />
-                    <span className="sm:inline hidden">Daily limit reached</span>
-                    <span className="inline sm:hidden">Limit reached</span>
                   </>
                 ) : rewrites <= 0 ? (
                   <>
@@ -354,18 +332,7 @@ ${platformConfig.hashtags}`;
               </Button>
 
               {/* Usage Warning */}
-              {dailyUsage.remainingWords <= 500 && dailyUsage.remainingWords > 0 && (
-                <div className="bg-warning/10 border border-warning/20 rounded-lg p-4">
-                  <p className="text-sm text-warning">
-                    ⚠️ Only {dailyUsage.remainingWords} words remaining today. 
-                    <Button variant="link" className="p-0 ml-1 text-premium h-auto">
-                      Upgrade to Premium
-                    </Button> for unlimited daily access.
-                  </p>
-                </div>
-              )}
-              
-              {rewrites <= 2 && rewrites > 0 && !dailyUsage.isLimitReached && (
+              {rewrites <= 2 && rewrites > 0 && (
                 <div className="bg-warning/10 border border-warning/20 rounded-lg p-4">
                   <p className="text-sm text-warning">
                     ⚠️ Only {rewrites} rewrites remaining this month. 
