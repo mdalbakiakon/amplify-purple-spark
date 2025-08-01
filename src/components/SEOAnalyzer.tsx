@@ -112,7 +112,7 @@ export default function SEOAnalyzer() {
         </div>
         <div className="space-y-6">
           {/* Website SEO Analyzer - First section */}
-          <Card className="bg-gradient-dark border-border/50">
+          <Card className="max-w-6xl mx-auto bg-gradient-dark border-border/50">
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-foreground">
                 <Globe className="h-5 w-5 text-primary" />
@@ -164,7 +164,7 @@ export default function SEOAnalyzer() {
           </Card>
 
           {/* Content SEO Analyzer - Second section with reordered tabs */}
-          <Card className="bg-gradient-dark border-border/50">
+          <Card className="max-w-6xl mx-auto bg-gradient-dark border-border/50">
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-foreground">
                 <Tag className="h-5 w-5 text-primary" />
