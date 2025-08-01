@@ -3,6 +3,7 @@ import HeroSection from "@/components/HeroSection";
 import SEOAnalyzer from "@/components/SEOAnalyzer";
 import AIToolsSection from "@/components/AIToolsSection";
 import PricingSection from "@/components/PricingSection";
+import KeywordResearch from "@/components/KeywordResearch";
 
 const Index = () => {
   return (
@@ -13,6 +14,7 @@ const Index = () => {
         <div className="container mx-auto px-4 py-16">
           <SEOAnalyzer />
         </div>
+        <KeywordResearch />
         <AIToolsSection />
         <PricingSection />
       </main>

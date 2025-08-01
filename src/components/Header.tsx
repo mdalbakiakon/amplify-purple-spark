@@ -18,6 +18,9 @@ export default function Header() {
             <a href="#analyzer" className="text-foreground">
               SEO Analyzer
             </a>
+            <a href="#keyword" className="text-foreground">
+              Keyword Research
+            </a>
             <a href="#tools" className="text-foreground">
               AI Tools
             </a>
