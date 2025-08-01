@@ -63,7 +63,7 @@ const AIToolsSection = () => {
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            AI-Powered <span className="bg-gradient-purple bg-clip-text text-transparent">Content Tools</span>
+            AI-Powered <span className="bg-gradient-purple bg-clip-text text-transparent">Content Optimizer</span>
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
             Enhance and optimize your content with advanced AI algorithms
