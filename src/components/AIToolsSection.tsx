@@ -349,7 +349,7 @@ ${platformConfig.hashtags}`;
                   <div className="flex items-center justify-between">
                     <Label className="text-base font-semibold">SEO Keywords Added</Label>
                     <Badge variant="outline" className="bg-primary/20 text-primary border-primary/30">
-                      Free: Limited to 5 keywords only
+                      Free: 2 High + 3 Medium
                     </Badge>
                   </div>
                   
@@ -408,3 +408,5 @@ ${platformConfig.hashtags}`;
     </section>
   );
 };
+
+export default AIToolsSection;
