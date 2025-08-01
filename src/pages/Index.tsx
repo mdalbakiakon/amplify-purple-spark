@@ -11,14 +11,20 @@ const Index = () => {
       <Header />
       <main>
         <HeroSection />
-        <div className="container mx-auto px-4 py-16">
+        <div className="container mx-auto px-4 py-20">
           <SEOAnalyzer />
         </div>
-        <KeywordResearch />
-        <AIToolsSection />
-        <PricingSection />
+        <div className="container mx-auto px-4 py-20">
+          <KeywordResearch />
+        </div>
+        <div className="container mx-auto px-4 py-20">
+          <AIToolsSection />
+        </div>
+        <div className="container mx-auto px-4 py-20">
+          <PricingSection />
+        </div>
       </main>
-      
+
       {/* Footer */}
       <footer className="bg-card/30 border-t border-border py-12">
         <div className="container mx-auto px-4 text-center">
