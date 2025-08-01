@@ -15,13 +15,13 @@ export default function Header() {
 
           {/* Navigation */}
           <nav className="hidden md:flex items-center gap-6">
-            <a href="#analyzer" className="text-foreground hover:text-primary transition-colors">
+            <a href="#analyzer" className="text-foreground">
               SEO Analyzer
             </a>
-            <a href="#tools" className="text-foreground hover:text-primary transition-colors">
+            <a href="#tools" className="text-foreground">
               AI Tools
             </a>
-            <a href="#pricing" className="text-foreground hover:text-primary transition-colors">
+            <a href="#pricing" className="text-foreground">
               Pricing
             </a>
           </nav>
