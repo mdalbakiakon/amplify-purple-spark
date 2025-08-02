@@ -196,9 +196,9 @@ const AIToolsSection = () => {
                   } rounded-lg p-4 flex relative`}>
                     {optimizations <= 0 && optimizedContent && (
                       <div className="absolute inset-0 bg-background/80 backdrop-blur-sm z-10 rounded-lg flex flex-col items-center justify-center gap-2">
-                        <Lock className="h-8 w-8 text-warning" />
-                        <p className="text-center font-medium">Limit Reached</p>
-                        <p className="text-sm text-center text-muted-foreground max-w-xs">
+                        <Lock className="h-6 w-6 sm:h-8 sm:w-8 text-warning" />
+                        <p className="text-sm sm:text-base text-center font-medium">Limit Reached</p>
+                        <p className="text-[0.7rem] sm:text-sm text-center text-muted-foreground max-w-xs">
                           Upgrade to Premium to access the boosted content
                         </p>
                         <Button variant="premium" size="sm" className="mt-2 gap-2">
