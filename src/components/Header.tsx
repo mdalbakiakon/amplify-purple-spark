@@ -32,14 +32,6 @@ export default function Header() {
 
         {/* Actions */}
         <div className="flex items-center gap-3">
-          <div className="hidden md:flex items-center gap-2 bg-card px-3 py-2 rounded-lg border border-border">
-            <div className="w-2 h-2 bg-success rounded-full"></div>
-            <span className="text-sm text-muted-foreground">Free Plan</span>
-            <span className="text-xs bg-warning/20 text-warning px-2 py-1 rounded-full">
-              1/1 boosts used
-            </span>
-          </div>
-
           <Button variant="premium" size="sm" className="hidden md:flex">
             <Crown className="h-4 w-4" />
             Upgrade to Premium
