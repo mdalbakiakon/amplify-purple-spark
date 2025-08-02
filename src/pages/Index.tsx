@@ -28,7 +28,7 @@ const Index = () => {
         {/* Content Sections */}
         <section 
           id="analyzer" 
-          className="snap-start min-h-[calc(100vh-4rem)] md:min-h-screen w-full flex items-center justify-center py-12 md:py-0 scroll-mt-16"
+          className="snap-start min-h-[calc(100vh-4rem)] md:min-h-screen w-full flex items-center justify-center py-8 md:py-0 scroll-mt-12"
         >
           <div className="container mx-auto px-4 sm:px-6 max-w-6xl">
             <SEOAnalyzer />
@@ -37,7 +37,7 @@ const Index = () => {
 
         <section 
           id="keyword" 
-          className="snap-start min-h-[calc(100vh-4rem)] md:min-h-screen w-full flex items-center justify-center py-12 md:py-0 scroll-mt-16"
+          className="snap-start min-h-[calc(100vh-4rem)] md:min-h-screen w-full flex items-center justify-center py-8 md:py-0 scroll-mt-12"
         >
           <div className="container mx-auto px-4 sm:px-6 max-w-6xl">
             <KeywordResearch />
@@ -46,7 +46,7 @@ const Index = () => {
 
         <section 
           id="tools" 
-          className="snap-start min-h-[calc(100vh-4rem)] md:min-h-screen w-full flex items-center justify-center py-12 md:py-0 scroll-mt-16"
+          className="snap-start min-h-[calc(100vh-4rem)] md:min-h-screen w-full flex items-center justify-center py-8 md:py-0 scroll-mt-12"
         >
           <div className="container mx-auto px-4 sm:px-6 max-w-6xl">
             <AIToolsSection />
@@ -55,7 +55,7 @@ const Index = () => {
 
         <section 
           id="pricing" 
-          className="snap-start min-h-[calc(100vh-4rem)] md:min-h-screen w-full flex items-center justify-center py-12 md:py-0 scroll-mt-16"
+          className="snap-start min-h-[calc(100vh-4rem)] md:min-h-screen w-full flex items-center justify-center py-8 md:py-0 scroll-mt-12"
         >
           <div className="container mx-auto px-4 sm:px-6 max-w-6xl">
             <PricingSection />
