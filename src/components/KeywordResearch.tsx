@@ -41,7 +41,7 @@ export default function KeywordResearch() {
         if (!topic.trim()) {
             toast({
                 title: "Error",
-                description: "Please enter a topic to analyze",
+                description: "Please enter a topic to research keywords",
                 variant: "destructive",
             });
             return;
